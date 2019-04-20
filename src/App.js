@@ -3,6 +3,29 @@ import logo from './logo.svg'
 import './App.css'
 
 class App extends Component {
+
+  constructor() {
+    super()
+    this.state = {
+      fileContents: ""
+    }
+    this.handleFileSelection = this.handleFileSelection.bind(this)
+  }
+
+  handleFileSelection(e) {
+    let file = e.target.files[0]
+    const reader = new FileReader()
+    reader.onload = e => {
+      const { result } = e.target
+      this.setState({
+        fileContents: result
+      })
+      console.log(result)
+    }
+
+    reader.readAsText(file)
+  }
+
   render() {
     return (
       <div className="App">
@@ -19,6 +42,10 @@ class App extends Component {
           >
             Learn React
           </a>
+          <input type="file" onChange={this.handleFileSelection} />
+          <div>
+            {this.state.fileContents}
+          </div>
         </header>
       </div>
     )
