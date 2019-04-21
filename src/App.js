@@ -7,9 +7,12 @@ class App extends Component {
   constructor() {
     super()
     this.state = {
-      fileContents: ""
+      fileContents: "",
+      subtitles: [],
     }
     this.handleFileSelection = this.handleFileSelection.bind(this)
+    this.addsOneSecond = this.addsOneSecond.bind(this)
+    this.printState = this.printState.bind(this)
   }
 
   handleFileSelection(e) {
@@ -17,13 +20,34 @@ class App extends Component {
     const reader = new FileReader()
     reader.onload = e => {
       const { result } = e.target
-      this.setState({
-        fileContents: result
+      const subtitlesContext = result.split("\n\n")
+      const subtitles = subtitlesContext.map(raw => {
+        const [ ordinal, timeRange, ...text ] = raw.split("\n")
+        const [ start, end ] = timeRange.split(" --> ")
+
+        return {
+          ordinal,
+          entersAt: start,
+          leavesAt: end,
+          text,
+        }
       })
-      console.log(result)
+
+      this.setState({
+        fileContents: result,
+        subtitles,
+      })
     }
 
     reader.readAsText(file)
+  }
+
+  addsOneSecond(e) {
+    console.log(this.state.fileContents)
+  }
+
+  printState() {
+    console.log(this.state)
   }
 
   render() {
@@ -34,15 +58,9 @@ class App extends Component {
           <p>
             Edit <code>src/App.js</code> and save to reload.
           </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
           <input type="file" onChange={this.handleFileSelection} />
+          <input type="button" onClick={this.addsOneSecond} value="+1 second" />
+          <input type="button" onClick={this.printState} value="print state" />
           <div>
             {this.state.fileContents}
           </div>
