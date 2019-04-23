@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 
-import { loadFile } from './../actions'
+import { handleFileLoading } from './../actions'
 
 class FileSelector extends Component {
   render() {
@@ -26,7 +26,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFileSelection: (e) => dispatch(loadFile(e))
+    onFileSelection: (e) => dispatch(handleFileLoading(e))
   }
 }
 
