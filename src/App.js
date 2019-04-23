@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+
 import logo from './logo.svg'
 import './App.css'
+import subtitlesReducer from './reducers/subtitles'
+
+let store = createStore(subtitlesReducer)
 
 class App extends Component {
 
@@ -52,20 +58,22 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <input type="file" onChange={this.handleFileSelection} />
-          <input type="button" onClick={this.addsOneSecond} value="+1 second" />
-          <input type="button" onClick={this.printState} value="print state" />
-          <div>
-            {this.state.fileContents}
-          </div>
-        </header>
-      </div>
+      <Provider store={store}>
+        <div className="App">
+          <header className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+            <p>
+              Edit <code>src/App.js</code> and save to reload.
+            </p>
+            <input type="file" onChange={this.handleFileSelection} />
+            <input type="button" onClick={this.addsOneSecond} value="+1 second" />
+            <input type="button" onClick={this.printState} value="print state" />
+            <div>
+              {this.state.fileContents}
+            </div>
+          </header>
+        </div>
+      </Provider>
     )
   }
 }
