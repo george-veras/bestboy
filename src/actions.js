@@ -28,6 +28,12 @@ export const loadFile = (e) => {
   }
 }
 
+export const aheadMilliseconds = (milliseconds) => {
+  return dispatch => {
+
+  }
+}
+
 export const setLoadState = () => {
   return {
     type: 'SET_LOAD_STATE'
@@ -44,5 +50,12 @@ export const loadFileSuccess = (payload) => {
   return {
     type: 'LOAD_FILE_SUCCESS',
     payload
+  }
+}
+
+export const updateSubtitles = (subtitles) => {
+  return {
+    type: 'UPDATE_SUBTITLES',
+    payload: subtitles
   }
 }

@@ -23,10 +23,8 @@ class App extends Component {
             <p>
               Edit <code>src/App.js</code> and save to reload.
             </p>
-            <input type="file" onChange={this.handleFileSelection} />
             <FileSelector />
             <input type="button" onClick={this.addsOneSecond} value="+1 second" />
-            <input type="button" onClick={this.printState} value="print state" />
           </header>
         </div>
       </Provider>

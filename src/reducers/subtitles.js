@@ -12,7 +12,6 @@ const subtitles = (state = INITIAL_STATE, action) => {
         loadingFile: true
       }
     case 'LOAD_FILE_SUCCESS':
-      console.log("passando no reducer")
       console.log(action.payload)
       return {
         loadingFile: false,
