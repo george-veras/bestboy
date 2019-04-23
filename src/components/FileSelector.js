@@ -1,20 +1,20 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-// import 
+import { selectFile } from './../actions'
 
 class FileSelector extends Component {
   render() {
     return (
-      <input type="file" onChange={this.handleFileSelection} />
+      <input type="file" onChange={this.props.onFileSelection} />
     )
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onChange: () => dispatch(onChange)
+    onFileSelection: (e) => dispatch(selectFile(e))
   }
 }
 
-export default FileSelector
+export default connect(null, mapDispatchToProps)(FileSelector)

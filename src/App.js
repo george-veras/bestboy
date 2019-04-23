@@ -1,12 +1,17 @@
 import React, { Component } from 'react'
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
+import thunk from 'redux-thunk'
 
 import logo from './logo.svg'
 import './App.css'
 import subtitlesReducer from './reducers/subtitles'
+import FileSelector from './components/FileSelector'
 
-let store = createStore(subtitlesReducer)
+let store = createStore(
+  subtitlesReducer,
+  applyMiddleware(thunk)
+)
 
 class App extends Component {
 
@@ -66,6 +71,7 @@ class App extends Component {
               Edit <code>src/App.js</code> and save to reload.
             </p>
             <input type="file" onChange={this.handleFileSelection} />
+            <FileSelector />
             <input type="button" onClick={this.addsOneSecond} value="+1 second" />
             <input type="button" onClick={this.printState} value="print state" />
             <div>
