@@ -26,6 +26,7 @@
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
-    "eslint-plugin-react": "^7.12.4"
+    "eslint-plugin-react": "^7.12.4",
+    "redux-devtools-extension": "^2.13.8"
   }
 }

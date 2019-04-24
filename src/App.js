@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
+import { composeWithDevTools } from 'redux-devtools-extension'
 
 import logo from './logo.svg'
 import './App.css'
@@ -10,7 +11,9 @@ import FileSelector from './components/FileSelector'
 
 let store = createStore(
   subtitlesReducer,
-  applyMiddleware(thunk)
+  composeWithDevTools(
+    applyMiddleware(thunk)
+  )
 )
 
 class App extends Component {
