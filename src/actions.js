@@ -1,3 +1,5 @@
+'use strict'
+
 export const handleFileLoading = (e) => {
   return dispatch => {
 
@@ -6,28 +8,36 @@ export const handleFileLoading = (e) => {
     let file = e.target.files[0]
 
     const reader = new FileReader()
-    reader.onload = e => {
+    reader.onload = readEvt => {
 
-      const { results: contents } = e.target
-      dispatch(loadRawContents(contents))
+      const { result: fileContents } = readEvt.target
+      dispatch(loadRawContents(fileContents))
 
-      const subtitlesContext = result.split("\n\n")
-      const subtitles = subtitlesContext.map(raw => {
-        const [ ordinal, timeRange, ...text ] = raw.split("\n")
-        const [ start, end ] = timeRange.split(" --> ")
-
-        return {
-          ordinal,
-          entersAt: start,
-          leavesAt: end,
-          text,
-        }
-      })
-
-      dispatch(updateSubtitles(subtitles))
+      loadSubtitleObjs(fileContents)(dispatch)
+      dispatch(completeFileLoading())
     }
 
     reader.readAsText(file)
+  }
+}
+
+export const loadSubtitleObjs = (rawText) => {
+  return dispatch => {
+    const rawSubtitles = rawText.split("\n\n")
+
+    const subtitleObjs = rawSubtitles.map(raw => {
+      const [ ordinal, timeRange, ...text ] = raw.split("\n")
+      const [ start, end ] = timeRange.split(" --> ")
+  
+      return {
+        ordinal,
+        entersAt: start,
+        leavesAt: end,
+        text,
+      }
+    })
+
+    dispatch(updateSubtitleObjs(subtitleObjs))
   }
 }
 
@@ -50,7 +60,7 @@ export const loadRawContents = contents => {
   }
 }
 
-export const updateSubtitles = subtitles => {
+export const updateSubtitleObjs = subtitles => {
   return {
     type: 'UPDATE_SUBTITLES',
     payload: subtitles
