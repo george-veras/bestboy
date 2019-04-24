@@ -6,17 +6,25 @@ const INITIAL_STATE = {
 
 const subtitles = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case 'SET_LOAD_STATE':
+    case 'FILE_LOADING_START':
       return {
         ...state,
         loadingFile: true
       }
-    case 'LOAD_FILE_SUCCESS':
-      console.log(action.payload)
+    case 'FILE_LOADING_COMPLETE':
       return {
-        loadingFile: false,
-        fileContents: action.payload.fileContents,
-        subtitles: action.payload.subtitles
+        ...state,
+        loadingFile: false
+      }
+    case 'LOAD_CONTENT':
+      return {
+        ...state,
+        fileContents: action.payload
+      }
+    case 'UPDATE_SUBTITLES':
+      return {
+        ...state,
+        subtitles: action.payload
       }
     default:
       return state

@@ -1,59 +1,66 @@
-export const loadFile = (e) => {
+'use strict'
+
+export const handleFileLoading = (e) => {
   return dispatch => {
-    dispatch(setLoadState())
+
+    dispatch(startFileLoading())
+
     let file = e.target.files[0]
+
     const reader = new FileReader()
-    reader.onload = e => {
-      const { result } = e.target
-      const subtitlesContext = result.split("\n\n")
-      const subtitles = subtitlesContext.map(raw => {
-        const [ ordinal, timeRange, ...text ] = raw.split("\n")
-        const [ start, end ] = timeRange.split(" --> ")
+    reader.onload = readEvt => {
 
-        return {
-          ordinal,
-          entersAt: start,
-          leavesAt: end,
-          text,
-        }
-      })
+      const { result: fileContents } = readEvt.target
+      dispatch(loadRawContents(fileContents))
 
-      dispatch(loadFileSuccess({
-        fileContents: result,
-        subtitles
-      }))
+      loadSubtitleObjs(fileContents)(dispatch)
+      dispatch(completeFileLoading())
     }
 
     reader.readAsText(file)
   }
 }
 
-export const aheadMilliseconds = (milliseconds) => {
+export const loadSubtitleObjs = (rawText) => {
   return dispatch => {
+    const rawSubtitles = rawText.split("\n\n")
 
+    const subtitleObjs = rawSubtitles.map(raw => {
+      const [ ordinal, timeRange, ...text ] = raw.split("\n")
+      const [ start, end ] = timeRange.split(" --> ")
+  
+      return {
+        ordinal,
+        entersAt: start,
+        leavesAt: end,
+        text,
+      }
+    })
+
+    dispatch(updateSubtitleObjs(subtitleObjs))
   }
 }
 
-export const setLoadState = () => {
+export const startFileLoading = () => {
   return {
-    type: 'SET_LOAD_STATE'
+    type: 'FILE_LOADING_START'
   }
 }
 
-export const setLoadComplete = () => {
+export const completeFileLoading = () => {
   return {
-    type: 'SET_LOAD_COMPLETE'
+    type: 'FILE_LOADING_COMPLETE'
   }
 }
 
-export const loadFileSuccess = (payload) => {
+export const loadRawContents = contents => {
   return {
-    type: 'LOAD_FILE_SUCCESS',
-    payload
+    type: 'LOAD_CONTENT',
+    payload: contents
   }
 }
 
-export const updateSubtitles = (subtitles) => {
+export const updateSubtitleObjs = subtitles => {
   return {
     type: 'UPDATE_SUBTITLES',
     payload: subtitles

@@ -1,7 +1,11 @@
 'use strict'
 
-import { loadFileSuccess } from './actions'
+import { loadFile } from './actions'
 
 describe('actions', () => {
+
+  test('loadFile', () => {
+    loadFile
+  })
 
 })
