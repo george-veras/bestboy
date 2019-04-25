@@ -2,10 +2,14 @@
 
 import { loadSubtitlesObjs } from './actions'
 
-describe('actions', () => {
+describe('actions.js', () => {
 
-  test('loadSubtitlesObjs', done => {
-    done()
+  before(() => {
+    
+  })
+
+  test('.loadSubtitlesObjs(rawText)', () => {
+
   })
 
 })
