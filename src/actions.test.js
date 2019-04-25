@@ -1,11 +1,11 @@
 'use strict'
 
-import { loadFile } from './actions'
+import { loadSubtitlesObjs } from './actions'
 
 describe('actions', () => {
 
-  test('loadFile', () => {
-    loadFile
+  test('loadSubtitlesObjs', done => {
+    done()
   })
 
 })
