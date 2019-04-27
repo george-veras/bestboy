@@ -6,7 +6,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
+    "test:debug": "jest --watch --no-cache --runInBand",
+    "test:debug2": "react-scripts --inspect-brk test--runInBand --no-watch",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

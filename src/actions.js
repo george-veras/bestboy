@@ -23,7 +23,9 @@ export const handleFileLoading = (e) => {
 
 export const loadSubtitleObjs = (rawText) => {
   return dispatch => {
-    const rawSubtitles = rawText.split("\n\n")
+    const rawSubtitles = rawText
+      .replace("\r\n", "\n").replace("\r", "\n")
+      .split("\n\n")
 
     const subtitleObjs = rawSubtitles.map(raw => {
       const [ ordinal, timeRange, ...text ] = raw.split("\n")
