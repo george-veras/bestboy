@@ -13,7 +13,7 @@ class FileSelector extends Component {
             JSON.stringify(this.props.subtitles)
           }
         </div>
-        <input type="button" onClick={this.shiftSubtitles} value="+1 second" />
+        <input type="button" onClick={() => this.props.shiftSubtitles(1000, this.props.subtitles)} value="+1 second" />
       </Fragment>
     )
   }
@@ -21,13 +21,13 @@ class FileSelector extends Component {
 
 const mapStateToProps = state => {
   return {
-    subtitles: state.subtitles
+    subtitles: state.subtitles,
   }
 }
 const mapDispatchToProps = dispatch => {
   return {
     onFileSelection: (e) => dispatch(handleFileLoading(e)),
-    shiftSubtitles: (e) => dispatch(handleSubtitlesShifting(e))
+    shiftSubtitles: (milliseconds, subtitles) => dispatch(handleSubtitlesShifting(milliseconds, subtitles))
   }
 }
 

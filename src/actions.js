@@ -21,6 +21,15 @@ export const handleFileLoading = (e) => {
   }
 }
 
+export const handleSubtitlesShifting = (milliseconds, subtitles) => {
+  return dispatch => {
+
+    const shiftedSubtitles = subtitles.map(subtitle => {
+      // subtitle.entersAt = subtitle.entersAt + 
+    })
+  }
+}
+
 export const loadSubtitleObjs = (rawText) => {
   return dispatch => {
     const rawSubtitles = rawText.split(/\r\n\r\n|\n\n/)
