@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 
-import { handleFileLoading } from './../actions'
+import { handleFileLoading, handleSubtitlesShifting } from './../actions'
 
 class FileSelector extends Component {
   render() {
@@ -13,6 +13,7 @@ class FileSelector extends Component {
             JSON.stringify(this.props.subtitles)
           }
         </div>
+        <input type="button" onClick={this.shiftSubtitles} value="+1 second" />
       </Fragment>
     )
   }
@@ -23,10 +24,10 @@ const mapStateToProps = state => {
     subtitles: state.subtitles
   }
 }
-
 const mapDispatchToProps = dispatch => {
   return {
-    onFileSelection: (e) => dispatch(handleFileLoading(e))
+    onFileSelection: (e) => dispatch(handleFileLoading(e)),
+    shiftSubtitles: (e) => dispatch(handleSubtitlesShifting(e))
   }
 }
 
