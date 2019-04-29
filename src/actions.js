@@ -25,8 +25,12 @@ export const handleSubtitlesShifting = (milliseconds, subtitles) => {
   return dispatch => {
 
     const shiftedSubtitles = subtitles.map(subtitle => {
-      // subtitle.entersAt = subtitle.entersAt + 
+      subtitle.start += milliseconds
+      subtitle.end += milliseconds
+      return subtitle
     })
+
+    dispatch(updateSubtitleObjs(shiftedSubtitles))
   }
 }
 
