@@ -30,24 +30,35 @@ export const handleSubtitlesShifting = (milliseconds, subtitles) => {
   }
 }
 
-export const loadSubtitleObjs = (rawText) => {
+export const loadSubtitleObjs = rawText => {
   return dispatch => {
     const rawSubtitles = rawText.split(/\r\n\r\n|\n\n/)
 
     const subtitleObjs = rawSubtitles.map(raw => {
       const [ ordinal, timeRange, ...text ] = raw.split(/\r\n|\n/)
-      const [ start, end ] = timeRange.split(" --> ")
+      const [ startSrtPattern, endSrtPattern ] = timeRange.split(" --> ")
 
       return {
         ordinal,
-        entersAt: start,
-        leavesAt: end,
+        start: srtTimeToMilliseconds(startSrtPattern),
+        end: srtTimeToMilliseconds(endSrtPattern),
         text,
       }
     })
 
     dispatch(updateSubtitleObjs(subtitleObjs))
   }
+}
+
+export const srtTimeToMilliseconds = srtTime => {
+  const [ hours, minutes, seconds ] = srtTime.split(":")
+
+  let milliseconds
+  milliseconds = parseInt(seconds.replace(',',''))
+  milliseconds += parseInt(minutes) * 60 * 1000
+  milliseconds += parseInt(hours) * 60 * 60 * 1000
+
+  return milliseconds
 }
 
 export const startFileLoading = () => {
