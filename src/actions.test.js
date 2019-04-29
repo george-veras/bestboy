@@ -3,7 +3,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import { loadSubtitleObjs } from './actions'
+import { loadSubtitleObjs, srtTimeToMilliseconds } from './actions'
 
 describe('actions.js', () => {
 
@@ -25,8 +25,8 @@ describe('actions.js', () => {
         payload: [
           {
             ordinal: "1",
-            entersAt: "00:02:17,440",
-            leavesAt: "00:02:20,375",
+            start: 137440,
+            end: 140375,
             text: [
               "Senator, we're making",
               "our final approach into Coruscant."
@@ -34,8 +34,8 @@ describe('actions.js', () => {
           },
           {
             ordinal: "2",
-            entersAt: "00:02:20,476",
-            leavesAt: "00:02:22,501",
+            start: 140476,
+            end: 142501,
             text: [
               "Very good, Lieutenant.",
               ""
@@ -61,16 +61,16 @@ describe('actions.js', () => {
         expect(dispatchedObj.payload.length).toEqual(3)
         expect(dispatchedObj.payload[0]).toEqual({
           ordinal: "1",
-            entersAt: "00:00:16,362",
-            leavesAt: "00:00:20,196",
+            start: 16362,
+            end: 20196,
             text: [
               "[Suspenseful instrumental music]"
             ]
         })
         expect(dispatchedObj.payload[2]).toEqual({
           ordinal: "3",
-            entersAt: "00:00:54,400",
-            leavesAt: "00:00:57,062",
+            start: 54400,
+            end: 57062,
             text: [
               "Baltimore, Maryland 1980"
             ]
@@ -96,24 +96,36 @@ describe('actions.js', () => {
         expect(dispatchedObj.payload.length).toEqual(1612)
         expect(dispatchedObj.payload[0]).toEqual({
           ordinal: "1",
-            entersAt: "00:00:16,362",
-            leavesAt: "00:00:20,196",
+            start: 16362,
+            end: 20196,
             text: [
               "[Suspenseful instrumental music]"
             ]
         })
         expect(dispatchedObj.payload[1611]).toEqual({
           ordinal: "1612",
-            entersAt: "02:00:08,080",
-            leavesAt: "02:00:11,015",
+            start: 7208080,
+            end: 7211015,
             text: [
               "[Dramatic instrumental music]"
             ]
         })
       })
-
     })
 
+  })
+
+  describe('srtTimeToMilliseconds', () => {
+
+    let milliseconds
+
+    beforeAll(() => {
+      milliseconds = srtTimeToMilliseconds("03:59:53,699")
+    })
+
+    test('should translate time (string) in SRT file pattern to milliseconds (number)',() => {
+      expect(milliseconds).toBe(14393699)
+    })
   })
 
 })

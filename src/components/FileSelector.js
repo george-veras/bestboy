@@ -8,11 +8,11 @@ class FileSelector extends Component {
     return (
       <Fragment>
         <input type="file" onChange={this.props.onFileSelection} />
-        <div>
+        {/* <div>
           {
             JSON.stringify(this.props.subtitles)
           }
-        </div>
+        </div> */}
         <input type="button" onClick={() => this.props.shiftSubtitles(1000, this.props.subtitles)} value="+1 second" />
       </Fragment>
     )
