@@ -34,6 +34,21 @@ export const handleSubtitlesShifting = (milliseconds, subtitles) => {
   }
 }
 
+export const castMsToSrt = milliseconds => {
+
+  let seconds = Math.floor(milliseconds / 1000)
+  let minutes = Math.floor(seconds / 60)
+  const hours = Math.floor(minutes / 60)
+  milliseconds = milliseconds % 1000
+  seconds = seconds % 60
+  minutes = minutes % 60
+
+  return (hours < 10 ? '0' : '') + hours + ':'
+       + (minutes < 10 ? '0' : '') + minutes + ':'
+       + (seconds < 10 ? '0' : '') + seconds + ','
+       + (milliseconds < 100 ? '0' : '') + (milliseconds < 10 ? '0' : '') + milliseconds
+}
+
 export const loadSubtitleObjs = rawText => {
   return dispatch => {
     const rawSubtitles = rawText.split(/\r\n\r\n|\n\n/)

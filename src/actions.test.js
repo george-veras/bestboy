@@ -3,7 +3,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import { loadSubtitleObjs, srtTimeToMilliseconds } from './actions'
+import { loadSubtitleObjs, srtTimeToMilliseconds, castMsToSrt } from './actions'
 
 describe('actions.js', () => {
 
@@ -115,7 +115,7 @@ describe('actions.js', () => {
 
   })
 
-  describe('srtTimeToMilliseconds', () => {
+  describe('srtTimeToMilliseconds(srtTime)', () => {
 
     let milliseconds
 
@@ -123,8 +123,22 @@ describe('actions.js', () => {
       milliseconds = srtTimeToMilliseconds("03:59:53,699")
     })
 
-    test('should translate time (string) in SRT file pattern to milliseconds (number)',() => {
+    test('should translate time (string) in SRT file pattern to milliseconds (number).',() => {
       expect(milliseconds).toBe(14393699)
+    })
+  })
+
+  describe.only('castMsToSrt(milliseconds)', () => {
+
+    let srtPatternTime
+
+    beforeAll(() => {
+      srtPatternTime = castMsToSrt(14393699)
+      console.log(srtPatternTime)
+    })
+
+    test('should translate milliseconds (number) to SRT file pattern (string).', () => {
+      expect(srtPatternTime).toEqual("03:59:53,699")
     })
   })
 
