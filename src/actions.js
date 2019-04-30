@@ -34,6 +34,19 @@ export const handleSubtitlesShifting = (milliseconds, subtitles) => {
   }
 }
 
+export const handleSubtitlesShifting2 = (milliseconds, subtitles) => {
+  return dispatch => {
+
+    const shiftedSubtitles = subtitles.map(subtitle => {
+      subtitle.start += milliseconds
+      subtitle.end += milliseconds
+      return subtitle
+    })
+
+    dispatch(updateSubtitleObjs(shiftedSubtitles))
+  }
+}
+
 export const castMsToSrt = milliseconds => {
 
   let seconds = Math.floor(milliseconds / 1000)
