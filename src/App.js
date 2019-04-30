@@ -8,6 +8,7 @@ import logo from './logo.svg'
 import './App.css'
 import subtitlesReducer from './reducers/subtitles'
 import FileSelector from './components/FileSelector'
+import VideoPlayer from './components/VideoPlayer'
 
 let store = createStore(
   subtitlesReducer,
@@ -26,6 +27,7 @@ class App extends Component {
             <p>
               Edit <code>src/App.js</code> and save to reload.
             </p>
+            <VideoPlayer />
             <FileSelector />
             <input type="button" onClick={this.addsOneSecond} value="+1 second" />
           </header>
