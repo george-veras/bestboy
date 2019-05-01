@@ -8,6 +8,7 @@ import logo from './logo.svg'
 import './App.css'
 import subtitlesReducer from './reducers/subtitles'
 import FileSelector from './components/FileSelector'
+import VideoPlayer from './components/VideoPlayer'
 
 import { handleFileLoading } from './actions'
 
@@ -28,6 +29,7 @@ class App extends Component {
             <p>
               Edit <code>src/App.js</code> and save to reload.
             </p>
+            <VideoPlayer />
             <FileSelector />
           </header>
         </div>
