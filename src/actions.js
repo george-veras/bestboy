@@ -21,6 +21,12 @@ export const handleFileLoading = (e) => {
   }
 }
 
+export const saveSubtitlesFile = subtitles => {
+  const fileContents = subtitles.reduce((contents, currentSubtitle) => {
+    
+  })
+}
+
 export const handleSubtitlesShifting = (milliseconds, subtitles) => {
   return dispatch => {
 
