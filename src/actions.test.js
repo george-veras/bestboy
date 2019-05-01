@@ -139,7 +139,6 @@ describe('actions.js', () => {
 
     beforeAll(() => {
       srtPatternTime = castMsToSrt(14393699)
-      console.log(srtPatternTime)
     })
 
     test('should translate milliseconds (number) to SRT file pattern (string).', () => {
@@ -170,11 +169,11 @@ describe('actions.js', () => {
     ]
 
     beforeAll(() => {
-      saveSubtitles()
+      saveSubtitles(subtitlesArray)
     })
 
-    it('should write down the subtitle objects into a file.', () => {
-
+    it('should write down the subtitle objects into a file.', done => {
+      
     })
   })
 

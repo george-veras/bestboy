@@ -28,21 +28,25 @@ export const saveSubtitles = subtitles => {
   const fileContents = subtitles.reduce((contents, subtitleObj) => {
 
     contents += subtitleObj.ordinal
-    contents += `\n${subtitleObj.start} --> ${subtitleObj.end}`
+    contents += `\n${subtitleObj.start} --> ${subtitleObj.end}\n`
 
     contents += subtitleObj.text.reduce((text, textLine) => {
-      contents += `\n${textLine}`
-    }, subtitleObj.text[0])
+      text += `${textLine}\n`
+      return text
+    })
 
     return contents
   }, "")
 
-  let writeStream = fs.createFileStream("test.srt")
+  console.log("WOOOOOOOE: " + fileContents)
+  let writeStream = fs.createWriteStream("test.srt")
   writeStream.write(fileContents)
 
   writeStream.on("finish", () => {
     console.log("FINISH")
   })
+
+  writeStream.end()
 }
 
 export const handleSubtitlesShifting = (milliseconds, subtitles) => {
