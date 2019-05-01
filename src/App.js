@@ -9,6 +9,8 @@ import './App.css'
 import subtitlesReducer from './reducers/subtitles'
 import FileSelector from './components/FileSelector'
 
+import { handleFileLoading } from './actions'
+
 let store = createStore(
   subtitlesReducer,
   composeWithDevTools(
@@ -27,7 +29,6 @@ class App extends Component {
               Edit <code>src/App.js</code> and save to reload.
             </p>
             <FileSelector />
-            <input type="button" onClick={this.addsOneSecond} value="+1 second" />
           </header>
         </div>
       </Provider>
