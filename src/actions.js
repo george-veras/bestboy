@@ -22,9 +22,20 @@ export const handleFileLoading = (e) => {
 }
 
 export const saveSubtitlesFile = subtitles => {
-  const fileContents = subtitles.reduce((contents, currentSubtitle) => {
-    
-  })
+
+  const fileContents = subtitles.reduce((contents, subtitleObj) => {
+
+    contents += subtitleObj.ordinal
+    contents += `\n${subtitleObj.start} --> ${subtitleObj.end}`
+
+    contents += subtitleObj.text.reduce((text, textLine) => {
+      contents += `\n${textLine}`
+    }, subtitleObj.text[0])
+
+    return contents
+  }, "")
+
+  
 }
 
 export const handleSubtitlesShifting = (milliseconds, subtitles) => {
