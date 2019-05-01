@@ -1,5 +1,7 @@
 'use strict'
 
+import fs from 'fs'
+
 export const handleFileLoading = (e) => {
   return dispatch => {
 
@@ -21,7 +23,7 @@ export const handleFileLoading = (e) => {
   }
 }
 
-export const saveSubtitlesFile = subtitles => {
+export const saveSubtitles = subtitles => {
 
   const fileContents = subtitles.reduce((contents, subtitleObj) => {
 
@@ -35,7 +37,12 @@ export const saveSubtitlesFile = subtitles => {
     return contents
   }, "")
 
-  
+  let writeStream = fs.createFileStream("test.srt")
+  writeStream.write(fileContents)
+
+  writeStream.on("finish", () => {
+    console.log("FINISH")
+  })
 }
 
 export const handleSubtitlesShifting = (milliseconds, subtitles) => {

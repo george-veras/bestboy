@@ -3,7 +3,12 @@
 import fs from 'fs'
 import path from 'path'
 
-import { loadSubtitleObjs, srtTimeToMilliseconds, castMsToSrt } from './actions'
+import {
+  loadSubtitleObjs,
+  srtTimeToMilliseconds,
+  castMsToSrt,
+  saveSubtitles
+} from './actions'
 
 describe('actions.js', () => {
 
@@ -128,7 +133,7 @@ describe('actions.js', () => {
     })
   })
 
-  describe.only('castMsToSrt(milliseconds)', () => {
+  describe('castMsToSrt(milliseconds)', () => {
 
     let srtPatternTime
 
@@ -139,6 +144,37 @@ describe('actions.js', () => {
 
     test('should translate milliseconds (number) to SRT file pattern (string).', () => {
       expect(srtPatternTime).toEqual("03:59:53,699")
+    })
+  })
+
+  describe.only('', () => {
+
+    let subtitlesArray = [
+      {
+        ordinal: "1",
+        start: 137440,
+        end: 140375,
+        text: [
+          "Senator, we're making",
+          "our final approach into Coruscant."
+        ]
+      },
+      {
+        ordinal: "2",
+        start: 140476,
+        end: 142501,
+        text: [
+          "Very good, Lieutenant."
+        ]
+      }
+    ]
+
+    beforeAll(() => {
+      saveSubtitles()
+    })
+
+    it('should write down the subtitle objects into a file.', () => {
+
     })
   })
 
