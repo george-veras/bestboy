@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 class VideoPlayer extends Component {
   render() {
     return (
-      <video controls src="/Spider-Man.mp4" width="800">
-        <track label="English" kind="subtitles" srcLang="en" src="Red.Dragon.vtt" default />
+      <video controls src="/Avengers.mp4" width="800">
+        <track label="English" kind="subtitles" srcLang="en" src="Avengers.vtt" default />
         <div id="video-controls" class="controls" data-state="hidden">
           <button id="playpause" type="button" data-state="play">Play/Pause</button>
           <button id="stop" type="button" data-state="stop">Stop</button>
