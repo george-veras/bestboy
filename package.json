@@ -1,13 +1,36 @@
 {
-  "name": "subtitle-editor",
-  "version": "0.1.0",
+  "name": "bestboy",
+  "description": "Bestboy is the coolest subtitle editor as well as a web browser player.",
+  "version": "0.2.0",
+  "author": {
+    "name": "George Véras Valentim",
+    "email": "george.veras.valentim@gmail.com",
+    "url": "https://github.com/george-veras"
+  },
+  "bugs": "https://github.com/george-veras/bestboy/issues",
+  "homepage": "https://github.com/george-veras/bestboy",
+  "license": "MIT",
+  "keywords": [
+    "subtitle editor",
+    "online media player",
+    "closed caption",
+    "srt file",
+    "WebVTT"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "github:george-veras/bestboy"
+  },
+  "engines": {
+    "node": ">=11.14.0",
+    "npm": ">=6.9.0",
+    "yarn": ">=1.15.2"
+  },
   "private": true,
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:debug": "jest --watch --no-cache --runInBand",
-    "test:debug2": "react-scripts --inspect-brk test--runInBand --no-watch",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -28,7 +51,6 @@
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
-    "eslint-plugin-react": "^7.12.4",
     "redux-devtools-extension": "^2.13.8"
   }
 }
