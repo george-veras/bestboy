@@ -2,7 +2,7 @@
 
 import fs from 'fs'
 
-export const handleFileLoading = (e) => {
+export const handleFileLoading = e => {
   return dispatch => {
 
     dispatch(startFileLoading())
@@ -21,6 +21,10 @@ export const handleFileLoading = (e) => {
 
     reader.readAsText(file)
   }
+}
+
+export const handleVideoSelection = e => {
+
 }
 
 export const saveSubtitles = subtitles => {

@@ -8,6 +8,7 @@ class FileSelector extends Component {
     return (
       <Fragment>
         <input type="file" onChange={this.props.onFileSelection} />
+        <input type="file" onChange={this.props.onVideoSelection} />
         <input type="button" onClick={() => this.props.shiftSubtitles(1000, this.props.subtitles)} value="+1 second" />
       </Fragment>
     )
@@ -22,6 +23,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onFileSelection: (e) => dispatch(handleFileLoading(e)),
+    onVideoSelection: (e) => dispatch(handleVideoSelection(e)),
     shiftSubtitles: (milliseconds, subtitles) => dispatch(handleSubtitlesShifting(milliseconds, subtitles))
   }
 }
