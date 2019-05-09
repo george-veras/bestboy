@@ -1,7 +1,8 @@
 const INITIAL_STATE = {
   loadingFile: false,
-  fileContents: "",
+  subtitleFileContents: "",
   subtitles: [],
+  video: null
 }
 
 const subtitles = (state = INITIAL_STATE, action) => {
