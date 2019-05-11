@@ -10,8 +10,6 @@ import subtitlesReducer from './reducers/subtitles'
 import FileSelector from './components/FileSelector'
 import VideoPlayer from './components/VideoPlayer'
 
-import { handleFileLoading } from './actions'
-
 let store = createStore(
   subtitlesReducer,
   composeWithDevTools(
