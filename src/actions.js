@@ -1,5 +1,3 @@
-'use strict'
-
 import fs from 'fs'
 
 export const handleFileLoading = e => {
@@ -8,6 +6,7 @@ export const handleFileLoading = e => {
     dispatch(startFileLoading())
 
     let file = e.target.files[0]
+    dispatch(updateSubtitlesPath(URL.createObjectURL(file)))
 
     const reader = new FileReader()
     reader.onload = readEvt => {
@@ -26,7 +25,8 @@ export const handleFileLoading = e => {
 export const handleVideoSelection = e => {
   return dispatch => {
 
-    console.log(e.target.files[0])
+    let file = e.target.files[0]
+    dispatch(updateVideoPath(URL.createObjectURL(file)))
   }
 }
 
@@ -150,5 +150,19 @@ export const updateSubtitleObjs = subtitles => {
   return {
     type: 'UPDATE_SUBTITLES',
     payload: subtitles
+  }
+}
+
+export const updateVideoPath = videoPath => {
+  return {
+    type: 'UPDATE_VIDEO_PATH',
+    payload: videoPath
+  }
+}
+
+export const updateSubtitlesPath = subtitlesPath => {
+  return {
+    type: 'UPDATE_SUBTITLES_PATH',
+    payload: subtitlesPath
   }
 }
