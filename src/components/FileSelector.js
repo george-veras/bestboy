@@ -11,9 +11,9 @@ class FileSelector extends Component {
   render() {
     return (
       <Fragment>
-        <label for="subtitleInput">Choose subtitle to load</label>
+        <label htmlFor="subtitleInput">Choose subtitle to load</label>
         <input id="subtitleInput" name="subtitleInput" type="file" onChange={this.props.onFileSelection} />
-        <label for="videoInput">Choose video to load</label>
+        <label htmlFor="videoInput">Choose video to load</label>
         <input id="videoInput" name="videoInput" type="file" onChange={this.props.onVideoSelection} />
         <input type="button" onClick={() => this.props.shiftSubtitles(1000, this.props.subtitles)} value="+1 second" />
       </Fragment>
