@@ -24,7 +24,10 @@ export const handleFileLoading = e => {
 }
 
 export const handleVideoSelection = e => {
+  return dispatch => {
 
+    console.log(e.target.files[0])
+  }
 }
 
 export const saveSubtitles = subtitles => {
@@ -42,7 +45,6 @@ export const saveSubtitles = subtitles => {
     return contents
   }, "")
 
-  console.log("WOOOOOOOE: " + fileContents)
   let writeStream = fs.createWriteStream("test.srt")
   writeStream.write(fileContents)
 
