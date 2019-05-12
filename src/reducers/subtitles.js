@@ -2,7 +2,8 @@ const INITIAL_STATE = {
   loadingFile: false,
   subtitleFileContents: "",
   subtitles: [],
-  videoPath: ""
+  videoPath: "",
+  subtitlesPath: ""
 }
 
 const subtitles = (state = INITIAL_STATE, action) => {
@@ -26,6 +27,16 @@ const subtitles = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         subtitles: action.payload
+      }
+    case 'UPDATE_VIDEO_PATH':
+      return {
+        ...state,
+        videoPath: action.payload
+      }
+    case 'UPDATE_SUBTITLES_PATH':
+      return {
+        ...state,
+        subtitlesPath: action.payload
       }
     default:
       return state
