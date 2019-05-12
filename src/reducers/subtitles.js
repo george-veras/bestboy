@@ -2,7 +2,7 @@ const INITIAL_STATE = {
   loadingFile: false,
   subtitleFileContents: "",
   subtitles: [],
-  video: null
+  videoPath: ""
 }
 
 const subtitles = (state = INITIAL_STATE, action) => {
