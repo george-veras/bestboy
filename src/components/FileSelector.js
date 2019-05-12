@@ -1,14 +1,20 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 
-import { handleFileLoading, handleSubtitlesShifting } from './../actions'
+import {
+  handleFileLoading,
+  handleSubtitlesShifting,
+  handleVideoSelection
+} from './../actions'
 
 class FileSelector extends Component {
   render() {
     return (
       <Fragment>
-        <input type="file" onChange={this.props.onFileSelection} />
-        <input type="file" onChange={this.props.onVideoSelection} />
+        <label for="subtitleInput">Choose subtitle to load</label>
+        <input id="subtitleInput" name="subtitleInput" type="file" onChange={this.props.onFileSelection} />
+        <label for="videoInput">Choose video to load</label>
+        <input id="videoInput" name="videoInput" type="file" onChange={this.props.onVideoSelection} />
         <input type="button" onClick={() => this.props.shiftSubtitles(1000, this.props.subtitles)} value="+1 second" />
       </Fragment>
     )

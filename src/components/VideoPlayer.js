@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
 class VideoPlayer extends Component {
   render() {
     return (
-      <video controls src="/Avengers.mp4" width="800">
+      <video controls src={this.props.videoPath} width="800">
         <track label="English" kind="subtitles" srcLang="en" src="Avengers.vtt" default />
         <div id="video-controls" class="controls" data-state="hidden">
           <button id="playpause" type="button" data-state="play">Play/Pause</button>
@@ -25,4 +26,10 @@ class VideoPlayer extends Component {
   }
 }
 
-export default VideoPlayer
+const mapStateToProps = state => {
+  return {
+    videoPath: state.videoPath
+  }
+}
+
+export default connect(mapStateToProps)(VideoPlayer)
