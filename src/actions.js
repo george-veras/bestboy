@@ -25,7 +25,7 @@ export const handleFileLoading = e => {
 export const handleVideoSelection = e => {
   return dispatch => {
 
-    let file = e.target.files[0]
+    const [ file ] = e.target.files
     dispatch(updateVideoPath(URL.createObjectURL(file)))
   }
 }
