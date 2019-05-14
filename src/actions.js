@@ -1,13 +1,12 @@
-'use strict'
-
 import fs from 'fs'
 
-export const handleFileLoading = (e) => {
+export const handleFileLoading = e => {
   return dispatch => {
 
     dispatch(startFileLoading())
 
     let file = e.target.files[0]
+    dispatch(updateSubtitlesPath(URL.createObjectURL(file)))
 
     const reader = new FileReader()
     reader.onload = readEvt => {
@@ -20,6 +19,14 @@ export const handleFileLoading = (e) => {
     }
 
     reader.readAsText(file)
+  }
+}
+
+export const handleVideoSelection = e => {
+  return dispatch => {
+
+    const [ file ] = e.target.files
+    dispatch(updateVideoPath(URL.createObjectURL(file)))
   }
 }
 
@@ -38,7 +45,6 @@ export const saveSubtitles = subtitles => {
     return contents
   }, "")
 
-  console.log("WOOOOOOOE: " + fileContents)
   let writeStream = fs.createWriteStream("test.srt")
   writeStream.write(fileContents)
 
@@ -144,5 +150,19 @@ export const updateSubtitleObjs = subtitles => {
   return {
     type: 'UPDATE_SUBTITLES',
     payload: subtitles
+  }
+}
+
+export const updateVideoPath = videoPath => {
+  return {
+    type: 'UPDATE_VIDEO_PATH',
+    payload: videoPath
+  }
+}
+
+export const updateSubtitlesPath = subtitlesPath => {
+  return {
+    type: 'UPDATE_SUBTITLES_PATH',
+    payload: subtitlesPath
   }
 }

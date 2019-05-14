@@ -4,13 +4,10 @@ import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
-import logo from './logo.svg'
 import './App.css'
 import subtitlesReducer from './reducers/subtitles'
 import FileSelector from './components/FileSelector'
 import VideoPlayer from './components/VideoPlayer'
-
-import { handleFileLoading } from './actions'
 
 let store = createStore(
   subtitlesReducer,
