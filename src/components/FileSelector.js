@@ -28,7 +28,7 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    onFileSelection: (e) => dispatch(handleFileLoading(e)),
+    onFileSelection: (e) => dispatch(handleWebVTTFileLoading(e)),
     onVideoSelection: (e) => dispatch(handleVideoSelection(e)),
     shiftSubtitles: (milliseconds, subtitles) => dispatch(handleSubtitlesShifting(milliseconds, subtitles))
   }
