@@ -22,6 +22,28 @@ export const handleFileLoading = e => {
   }
 }
 
+export const handleWebVTTFileLoading = e => {
+  return dispatch => {
+
+    dispatch(startFileLoading())
+
+    const [ file ] = e.target.files
+    dispatch(updateSubtitlesPath(URL.createObjectURL(file)))
+
+    const reader = new FileReader()
+    reader.onload = readEvt => {
+
+      const { result: fileContents } = readEvt.target
+      dispatch(loadRawContents(fileContents))
+
+      loadSubtitleObjsFromWebVTT(fileContents)(dispatch)
+      dispatch(completeFileLoading())
+    }
+
+    reader.readAsText(file)
+  }
+}
+
 export const handleVideoSelection = e => {
   return dispatch => {
 
@@ -97,6 +119,26 @@ export const castMsToSrt = milliseconds => {
 }
 
 export const loadSubtitleObjs = rawText => {
+  return dispatch => {
+    const rawSubtitles = rawText.split(/\r\n\r\n|\n\n/)
+
+    const subtitleObjs = rawSubtitles.map(raw => {
+      const [ ordinal, timeRange, ...text ] = raw.split(/\r\n|\n/)
+      const [ startSrtPattern, endSrtPattern ] = timeRange.split(" --> ")
+
+      return {
+        ordinal,
+        start: srtTimeToMilliseconds(startSrtPattern),
+        end: srtTimeToMilliseconds(endSrtPattern),
+        text,
+      }
+    })
+
+    dispatch(updateSubtitleObjs(subtitleObjs))
+  }
+}
+
+export const loadSubtitleObjsFromWebVTT = rawText => {
   return dispatch => {
     const rawSubtitles = rawText.split(/\r\n\r\n|\n\n/)
 
