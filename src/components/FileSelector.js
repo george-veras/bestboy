@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 
 import {
-  handleFileLoading,
+  handleWebVTTFileLoading,
   handleSubtitlesShifting,
   handleVideoSelection
 } from './../actions'
