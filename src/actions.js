@@ -127,17 +127,18 @@ export const loadSubtitleObjs = rawText => {
 
 export const loadSubtitleObjsFromWebVTT = rawText => {
   return dispatch => {
+
     const rawSubtitles = rawText.split(/\r\n\r\n|\n\n/)
+    rawSubtitles.shift()
 
     const subtitleObjs = rawSubtitles.map(raw => {
-      const [ ordinal, timeRange, ...text ] = raw.split(/\r\n|\n/)
-      const [ startSrtPattern, endSrtPattern ] = timeRange.split(" --> ")
+      const [ timeRange, ...text ] = raw.split(/\r\n|\n/)
+      const [ startWebvttPattern, endWebvttPattern ] = timeRange.split(" --> ")
 
       return {
-        ordinal,
-        start: srtTimeToMilliseconds(startSrtPattern),
-        end: srtTimeToMilliseconds(endSrtPattern),
-        text,
+        start: webvttTimeToMilliseconds(startWebvttPattern),
+        end: webvttTimeToMilliseconds(endWebvttPattern),
+        text
       }
     })
 
@@ -152,6 +153,18 @@ export const srtTimeToMilliseconds = srtTime => {
   milliseconds = parseInt(seconds.replace(',',''))
   milliseconds += parseInt(minutes) * 60 * 1000
   milliseconds += parseInt(hours) * 60 * 60 * 1000
+
+  return milliseconds
+}
+
+export const webvttTimeToMilliseconds = webvttTime => {
+
+  const time = webvttTime.split(":")
+
+  let milliseconds = parseInt(time.pop().replace('.',''))  // pop seconds
+  milliseconds += parseInt(time.pop()) * 60 * 1000         // pop minutes
+  if (time.length)
+    milliseconds += parseInt(time.pop()) * 60 * 60 * 1000  // pop hours
 
   return milliseconds
 }
