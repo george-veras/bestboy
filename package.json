@@ -22,9 +22,9 @@
     "url": "github:george-veras/bestboy"
   },
   "engines": {
-    "node": ">=11.14.0",
+    "node": ">=10.15.3",
     "npm": ">=6.9.0",
-    "yarn": ">=1.15.2"
+    "yarn": ">=1.13.0"
   },
   "private": true,
   "scripts": {
