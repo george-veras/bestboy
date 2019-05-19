@@ -22,6 +22,28 @@ export const handleFileLoading = e => {
   }
 }
 
+export const handleWebVTTFileLoading = e => {
+  return dispatch => {
+
+    dispatch(startFileLoading())
+
+    const [ file ] = e.target.files
+    dispatch(updateSubtitlesPath(URL.createObjectURL(file)))
+
+    const reader = new FileReader()
+    reader.onload = readEvt => {
+
+      const { result: fileContents } = readEvt.target
+      dispatch(loadRawContents(fileContents))
+
+      loadSubtitleObjsFromWebVTT(fileContents)(dispatch)
+      dispatch(completeFileLoading())
+    }
+
+    reader.readAsText(file)
+  }
+}
+
 export const handleVideoSelection = e => {
   return dispatch => {
 
@@ -56,19 +78,6 @@ export const saveSubtitles = subtitles => {
 }
 
 export const handleSubtitlesShifting = (milliseconds, subtitles) => {
-  return dispatch => {
-
-    const shiftedSubtitles = subtitles.map(subtitle => {
-      subtitle.start += milliseconds
-      subtitle.end += milliseconds
-      return subtitle
-    })
-
-    dispatch(updateSubtitleObjs(shiftedSubtitles))
-  }
-}
-
-export const handleSubtitlesShifting2 = (milliseconds, subtitles) => {
   return dispatch => {
 
     const shiftedSubtitles = subtitles.map(subtitle => {
@@ -116,6 +125,27 @@ export const loadSubtitleObjs = rawText => {
   }
 }
 
+export const loadSubtitleObjsFromWebVTT = rawText => {
+  return dispatch => {
+
+    const rawSubtitles = rawText.split(/\r\n\r\n|\n\n/)
+    rawSubtitles.shift()
+
+    const subtitleObjs = rawSubtitles.map(raw => {
+      const [ timeRange, ...text ] = raw.split(/\r\n|\n/)
+      const [ startWebvttPattern, endWebvttPattern ] = timeRange.split(" --> ")
+
+      return {
+        start: webvttTimeToMilliseconds(startWebvttPattern),
+        end: webvttTimeToMilliseconds(endWebvttPattern),
+        text
+      }
+    })
+
+    dispatch(updateSubtitleObjs(subtitleObjs))
+  }
+}
+
 export const srtTimeToMilliseconds = srtTime => {
   const [ hours, minutes, seconds ] = srtTime.split(":")
 
@@ -123,6 +153,18 @@ export const srtTimeToMilliseconds = srtTime => {
   milliseconds = parseInt(seconds.replace(',',''))
   milliseconds += parseInt(minutes) * 60 * 1000
   milliseconds += parseInt(hours) * 60 * 60 * 1000
+
+  return milliseconds
+}
+
+export const webvttTimeToMilliseconds = webvttTime => {
+
+  const time = webvttTime.split(":")
+
+  let milliseconds = parseInt(time.pop().replace('.',''))  // pop seconds
+  milliseconds += parseInt(time.pop()) * 60 * 1000         // pop minutes
+  if (time.length)
+    milliseconds += parseInt(time.pop()) * 60 * 60 * 1000  // pop hours
 
   return milliseconds
 }
