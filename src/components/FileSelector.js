@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 
 import {
-  handleWebVTTFileLoading,
+  handleSubtitlesFileLoading,
   handleSubtitlesShifting,
   handleVideoSelection
 } from './../actions'
@@ -12,7 +12,7 @@ class FileSelector extends Component {
     return (
       <Fragment>
         <label htmlFor="subtitleInput">Choose subtitle to load</label>
-        <input id="subtitleInput" name="subtitleInput" type="file" onChange={this.props.onFileSelection} />
+        <input id="subtitleInput" name="subtitleInput" type="file" onChange={this.props.onSubtitlesSelection} />
         <label htmlFor="videoInput">Choose video to load</label>
         <input id="videoInput" name="videoInput" type="file" onChange={this.props.onVideoSelection} />
         <input type="button" onClick={() => this.props.shiftSubtitles(1000, this.props.subtitles)} value="+1 second" />
@@ -28,7 +28,7 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    onFileSelection: (e) => dispatch(handleWebVTTFileLoading(e)),
+    onSubtitlesSelection: (e) => dispatch(handleSubtitlesFileLoading(e)),
     onVideoSelection: (e) => dispatch(handleVideoSelection(e)),
     shiftSubtitles: (milliseconds, subtitles) => dispatch(handleSubtitlesShifting(milliseconds, subtitles))
   }
