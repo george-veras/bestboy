@@ -5,7 +5,9 @@ import {
   loadSubtitleObjs,
   srtTimeToMilliseconds,
   castMsToSrt,
-  saveSubtitles
+  saveSubtitles,
+  handleSubtitleFileLoading,
+  getSubtitleFileType
 } from './actions'
 
 describe('actions.js', () => {
@@ -144,33 +146,13 @@ describe('actions.js', () => {
     })
   })
 
-  describe.only('', () => {
-
-    let subtitlesArray = [
-      {
-        ordinal: "1",
-        start: 137440,
-        end: 140375,
-        text: [
-          "Senator, we're making",
-          "our final approach into Coruscant."
-        ]
-      },
-      {
-        ordinal: "2",
-        start: 140476,
-        end: 142501,
-        text: [
-          "Very good, Lieutenant."
-        ]
-      }
-    ]
+  describe.only('getSubtitleFileType', () => {
 
     beforeAll(() => {
-      saveSubtitles(subtitlesArray)
+      handleSubtitleFileLoading()
     })
 
-    it('should write down the subtitle objects into a file.', done => {
+    it('', () => {
       
     })
   })
