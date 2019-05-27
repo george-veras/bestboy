@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import {
   handleSubtitlesFileLoading,
   handleSubtitlesShifting,
-  handleVideoSelection
+  handleVideoSelection,
+  handleSave
 } from './../actions'
 
 class FileSelector extends Component {
@@ -16,6 +17,7 @@ class FileSelector extends Component {
         <label htmlFor="videoInput">Choose video to load</label>
         <input id="videoInput" name="videoInput" type="file" onChange={this.props.onVideoSelection} />
         <input type="button" onClick={() => this.props.shiftSubtitles(1000, this.props.subtitles)} value="+1 second" />
+        <input type="button" onClick={() => this.props.onSave(this.props.subtitles)} value="Save as WebVTT" />
       </Fragment>
     )
   }
@@ -28,8 +30,9 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    onSubtitlesSelection: (e) => dispatch(handleSubtitlesFileLoading(e)),
-    onVideoSelection: (e) => dispatch(handleVideoSelection(e)),
+    onSubtitlesSelection: e => dispatch(handleSubtitlesFileLoading(e)),
+    onVideoSelection: e => dispatch(handleVideoSelection(e)),
+    onSave: (subtitles) => dispatch(handleSave(subtitles)),
     shiftSubtitles: (milliseconds, subtitles) => dispatch(handleSubtitlesShifting(milliseconds, subtitles))
   }
 }

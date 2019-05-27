@@ -65,10 +65,34 @@ const getFileContents = file => {
 
 export const handleVideoSelection = e => {
   return dispatch => {
-
     const [ file ] = e.target.files
     dispatch(updateVideoPath(URL.createObjectURL(file)))
   }
+}
+
+export const handleSave = subtitles => {
+
+  return async function(dispatch) {
+    const renderedText = renderSubtitles(subtitles)
+
+  }
+}
+
+const renderSubtitles = subtitles => {
+
+  const renderedText = subtitles.reduce((text, subtitleObj) => {
+    text += subtitleObj.ordinal
+    text += `\n${subtitleObj.start} --> ${subtitleObj.end}\n`
+
+    text += subtitleObj.text.reduce((text, textLine) => {
+      text += `${textLine}\n`
+      return text
+    })
+
+    return text
+  }, "")
+
+  return renderedText
 }
 
 export const saveSubtitles = subtitles => {
