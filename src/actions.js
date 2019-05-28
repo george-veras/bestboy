@@ -1,47 +1,66 @@
 import fs from 'fs'
 
-export const handleFileLoading = e => {
-  return dispatch => {
-
-    dispatch(startFileLoading())
-
-    let file = e.target.files[0]
-    dispatch(updateSubtitlesPath(URL.createObjectURL(file)))
-
-    const reader = new FileReader()
-    reader.onload = readEvt => {
-
-      const { result: fileContents } = readEvt.target
-      dispatch(loadRawContents(fileContents))
-
-      loadSubtitleObjs(fileContents)(dispatch)
-      dispatch(completeFileLoading())
-    }
-
-    reader.readAsText(file)
+const getSubtitlesFileType = file => {
+  const [ , fileExtension ] = file.name.split(".")
+  let fileType
+  switch(fileExtension) {
+    case "vtt":
+      fileType = "WebVTT"
+      break
+    case "srt":
+      fileType = "SubRip"
+      break
+    default:
+      break
   }
+
+  return fileType
 }
 
-export const handleWebVTTFileLoading = e => {
-  return dispatch => {
+export const handleSubtitlesFileLoading = e => {
+  return async function(dispatch) {
 
     dispatch(startFileLoading())
 
     const [ file ] = e.target.files
+    const subtitlesFileType = getSubtitlesFileType(file)
+
     dispatch(updateSubtitlesPath(URL.createObjectURL(file)))
 
-    const reader = new FileReader()
-    reader.onload = readEvt => {
+    const fileContents = await getFileContents(file)
+    let subtitleObjs
+    switch (subtitlesFileType) {
+      case "WebVTT":
+        subtitleObjs = getSubtitleObjsFromWebVTT(fileContents)
+        break
+      case "SubRip":
+        subtitleObjs = getSubtitleObjsFromWebVTT(fileContents)
+        break
+      default:
+        break
+    }
 
-      const { result: fileContents } = readEvt.target
-      dispatch(loadRawContents(fileContents))
+    dispatch(updateSubtitleObjs(subtitleObjs))
 
-      loadSubtitleObjsFromWebVTT(fileContents)(dispatch)
-      dispatch(completeFileLoading())
+    dispatch(completeFileLoading())
+  }
+}
+
+const getFileContents = file => {
+  const reader = new FileReader()
+
+  return new Promise((resolve, reject) => {
+    reader.onerror = () => {
+      reader.abort()
+      reject(new DOMException("There was problem parsing input file."))
+    }
+
+    reader.onload = () => {
+      resolve(reader.result)
     }
 
     reader.readAsText(file)
-  }
+  })
 }
 
 export const handleVideoSelection = e => {
@@ -105,45 +124,42 @@ export const castMsToSrt = milliseconds => {
        + (milliseconds < 100 ? '0' : '') + (milliseconds < 10 ? '0' : '') + milliseconds
 }
 
-export const loadSubtitleObjs = rawText => {
-  return dispatch => {
-    const rawSubtitles = rawText.split(/\r\n\r\n|\n\n/)
+export const getSubtitleObjsFromSubRip = rawText => {
 
-    const subtitleObjs = rawSubtitles.map(raw => {
-      const [ ordinal, timeRange, ...text ] = raw.split(/\r\n|\n/)
-      const [ startSrtPattern, endSrtPattern ] = timeRange.split(" --> ")
+  const rawSubtitles = rawText.split(/\r\n\r\n|\n\n/)
 
-      return {
-        ordinal,
-        start: srtTimeToMilliseconds(startSrtPattern),
-        end: srtTimeToMilliseconds(endSrtPattern),
-        text,
-      }
-    })
+  const subtitleObjs = rawSubtitles.map(raw => {
+    const [ ordinal, timeRange, ...text ] = raw.split(/\r\n|\n/)
+    const [ startSrtPattern, endSrtPattern ] = timeRange.split(" --> ")
 
-    dispatch(updateSubtitleObjs(subtitleObjs))
-  }
+    return {
+      ordinal,
+      start: srtTimeToMilliseconds(startSrtPattern),
+      end: srtTimeToMilliseconds(endSrtPattern),
+      text
+    }
+  })
+
+  return subtitleObjs
 }
 
-export const loadSubtitleObjsFromWebVTT = rawText => {
-  return dispatch => {
+export const getSubtitleObjsFromWebVTT = rawText => {
 
-    const rawSubtitles = rawText.split(/\r\n\r\n|\n\n/)
-    rawSubtitles.shift()
+  const rawSubtitles = rawText.split(/\r\n\r\n|\n\n/)
+  rawSubtitles.shift()
 
-    const subtitleObjs = rawSubtitles.map(raw => {
-      const [ timeRange, ...text ] = raw.split(/\r\n|\n/)
-      const [ startWebvttPattern, endWebvttPattern ] = timeRange.split(" --> ")
+  const subtitleObjs = rawSubtitles.map(raw => {
+    const [ timeRange, ...text ] = raw.split(/\r\n|\n/)
+    const [ startWebvttPattern, endWebvttPattern ] = timeRange.split(" --> ")
 
-      return {
-        start: webvttTimeToMilliseconds(startWebvttPattern),
-        end: webvttTimeToMilliseconds(endWebvttPattern),
-        text
-      }
-    })
+    return {
+      start: webvttTimeToMilliseconds(startWebvttPattern),
+      end: webvttTimeToMilliseconds(endWebvttPattern),
+      text
+    }
+  })
 
-    dispatch(updateSubtitleObjs(subtitleObjs))
-  }
+  return subtitleObjs
 }
 
 export const srtTimeToMilliseconds = srtTime => {

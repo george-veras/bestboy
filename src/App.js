@@ -5,7 +5,7 @@ import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 import './App.css'
-import subtitlesReducer from './reducers/subtitles'
+import subtitlesReducer from './reducers'
 import FileSelector from './components/FileSelector'
 import VideoPlayer from './components/VideoPlayer'
 
