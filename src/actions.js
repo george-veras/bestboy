@@ -74,6 +74,20 @@ export const handleSave = subtitles => {
 
   return async function(dispatch) {
     const renderedText = renderSubtitles(subtitles)
+    const blob = new Blob([renderedText], {
+      type: "text/vtt;charset=utf8;"
+    })
+
+    const anchor = document.createElement("a")
+    document.body.appendChild(anchor)
+    anchor.setAttribute("href", window.URL.createObjectURL(blob))
+    anchor.setAttribute("download", "test.vtt")
+    anchor.style.display = ""
+
+    anchor.click()
+
+    document.body.removeChild(anchor)
+
   }
 }
 
