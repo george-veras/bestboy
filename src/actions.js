@@ -74,7 +74,6 @@ export const handleSave = subtitles => {
 
   return async function(dispatch) {
     const renderedText = renderSubtitles(subtitles)
-
   }
 }
 
