@@ -93,17 +93,18 @@ export const handleSave = subtitles => {
 
 const renderSubtitles = subtitles => {
 
-  const renderedText = subtitles.reduce((text, subtitleObj) => {
-    text += subtitleObj.ordinal
-    text += `\n${subtitleObj.start} --> ${subtitleObj.end}\n`
+  let renderedText = "WEBVTT\n\n"
+
+  renderedText = subtitles.reduce((text, subtitleObj) => {
+    text += `\n${castMsToSrt(subtitleObj.start)} --> ${castMsToSrt(subtitleObj.end)}\n`
 
     text += subtitleObj.text.reduce((text, textLine) => {
       text += `${textLine}\n`
       return text
-    })
+    }, "")
 
-    return text
-  }, "")
+    return text + '\n'
+  }, renderedText)
 
   return renderedText
 }
