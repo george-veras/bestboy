@@ -65,10 +65,48 @@ const getFileContents = file => {
 
 export const handleVideoSelection = e => {
   return dispatch => {
-
     const [ file ] = e.target.files
     dispatch(updateVideoPath(URL.createObjectURL(file)))
   }
+}
+
+export const handleSave = subtitles => {
+
+  return async function(dispatch) {
+    const renderedText = renderSubtitles(subtitles)
+    const blob = new Blob([renderedText], {
+      type: "text/vtt;charset=utf8;"
+    })
+
+    const anchor = document.createElement("a")
+    document.body.appendChild(anchor)
+    anchor.setAttribute("href", window.URL.createObjectURL(blob))
+    anchor.setAttribute("download", "test.vtt")
+    anchor.style.display = ""
+
+    anchor.click()
+
+    document.body.removeChild(anchor)
+
+  }
+}
+
+const renderSubtitles = subtitles => {
+
+  let renderedText = "WEBVTT\n\n"
+
+  renderedText = subtitles.reduce((text, subtitleObj) => {
+    text += `\n${castMsToSrt(subtitleObj.start)} --> ${castMsToSrt(subtitleObj.end)}\n`
+
+    text += subtitleObj.text.reduce((text, textLine) => {
+      text += `${textLine}\n`
+      return text
+    }, "")
+
+    return text + '\n'
+  }, renderedText)
+
+  return renderedText
 }
 
 export const saveSubtitles = subtitles => {
