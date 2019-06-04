@@ -21,10 +21,15 @@ class App extends Component {
     return (
       <Provider store={store}>
         <div className="App">
-          <header className="App-header">
+          <div className="body-card">
+            <span className="bestboy-title">bestboy</span>
             <VideoPlayer />
             <FileSelector />
-          </header>
+          </div>
+          {/* <header className="App-header">
+            <VideoPlayer />
+            <FileSelector />
+          </header> */}
         </div>
       </Provider>
     )
