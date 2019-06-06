@@ -26,10 +26,6 @@ class App extends Component {
             <VideoPlayer />
             <FileSelector />
           </div>
-          {/* <header className="App-header">
-            <VideoPlayer />
-            <FileSelector />
-          </header> */}
         </div>
       </Provider>
     )
