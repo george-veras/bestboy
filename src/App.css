@@ -9,7 +9,20 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.body-card {
+  margin: 0px 36px;
+  background-color: #434F5A;
+  border-radius: 4px;
+  box-shadow: 0px 2px #000000;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -21,6 +34,31 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.bestboy-title {
+  font-size: 90px;
+}
+
+.button-label {
+  font-family: "Roboto", sans-serif;
+  font-size: 25px;
+  margin: 15px;
+  margin-top: 37px;
+}
+
+.default-button {
+  background-color: #3CDABE;
+  border-radius: 4px;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-family: "Roboto", sans-serif;
+  padding: 15px 66px 14px 66px;
+  border: none;
+}
+
+.input-file {
+  display: none;
 }
 
 @keyframes App-logo-spin {

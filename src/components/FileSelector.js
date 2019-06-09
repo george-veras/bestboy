@@ -9,15 +9,33 @@ import {
 } from './../actions'
 
 class FileSelector extends Component {
+  constructor(props) {
+    super(props)
+    this.subtitleInput = React.createRef()
+    this.videoInput = React.createRef()
+    this.handleAddSubtitleClick = this.handleAddSubtitleClick.bind(this)
+    this.handleAddVideoClick = this.handleAddVideoClick.bind(this)
+  }
+
+  handleAddSubtitleClick() {
+    this.subtitleInput.current.click()
+  }
+
+  handleAddVideoClick() {
+    this.videoInput.current.click()
+  }
+
   render() {
     return (
       <Fragment>
-        <label htmlFor="subtitleInput">Choose subtitle to load</label>
-        <input id="subtitleInput" name="subtitleInput" type="file" onChange={this.props.onSubtitlesSelection} />
-        <label htmlFor="videoInput">Choose video to load</label>
-        <input id="videoInput" name="videoInput" type="file" onChange={this.props.onVideoSelection} />
-        <input type="button" onClick={() => this.props.shiftSubtitles(1000, this.props.subtitles)} value="+1 second" />
-        <input type="button" onClick={() => this.props.onSave(this.props.subtitles)} value="Save as WebVTT" />
+        <span className="button-label">Choose subtitle to load</span>
+        <input id="subtitleInput" className="input-file" type="file" onChange={this.props.onSubtitlesSelection} ref={this.subtitleInput} />
+        <input type="button" value="+ add file" className="default-button" onClick={this.handleAddSubtitleClick}></input>
+        <span className="button-label">Choose video to load</span>
+        <input id="videoInput" className="input-file" type="file" onChange={this.props.onVideoSelection} ref={this.videoInput} />
+        <input type="button" value="+ add file" className="default-button" onClick={this.handleAddVideoClick}></input>
+        {/* <input type="button" onClick={() => this.props.shiftSubtitles(1000, this.props.subtitles)} value="+1 second" />
+        <input type="button" onClick={() => this.props.onSave(this.props.subtitles)} value="Save as WebVTT" /> */}
       </Fragment>
     )
   }
