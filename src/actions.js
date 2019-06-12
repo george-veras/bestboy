@@ -73,7 +73,7 @@ export const handleVideoSelection = e => {
 export const handleSave = subtitles => {
 
   return async function(dispatch) {
-    const renderedText = renderSubtitles(subtitles)
+    const renderedText = renderWebVTTSubtitles(subtitles)
     const blob = new Blob([renderedText], {
       type: "text/vtt;charset=utf8;"
     })
@@ -91,7 +91,7 @@ export const handleSave = subtitles => {
   }
 }
 
-const renderSubtitles = subtitles => {
+const renderWebVTTSubtitles = subtitles => {
 
   let renderedText = "WEBVTT\n\n"
 
