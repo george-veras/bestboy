@@ -4,10 +4,7 @@ import path from 'path'
 import {
   loadSubtitleObjs,
   srtTimeToMilliseconds,
-  castMsToSrt,
-  saveSubtitles,
-  handleSubtitleFileLoading,
-  getSubtitleFileType
+  castMsToSrt
 } from './actions'
 
 describe('actions.js', () => {
@@ -145,16 +142,4 @@ describe('actions.js', () => {
       expect(srtPatternTime).toEqual("03:59:53,699")
     })
   })
-
-  describe.only('getSubtitleFileType', () => {
-
-    beforeAll(() => {
-      handleSubtitleFileLoading()
-    })
-
-    it('', () => {
-      
-    })
-  })
-
 })

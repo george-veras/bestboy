@@ -34,8 +34,6 @@ class FileSelector extends Component {
         <span className="button-label">Choose video to load</span>
         <input id="videoInput" className="input-file" type="file" onChange={this.props.onVideoSelection} ref={this.videoInput} />
         <input type="button" value="+ add file" className="default-button" onClick={this.handleAddVideoClick}></input>
-        {/* <input type="button" onClick={() => this.props.shiftSubtitles(1000, this.props.subtitles)} value="+1 second" />
-        <input type="button" onClick={() => this.props.onSave(this.props.subtitles)} value="Save as WebVTT" /> */}
       </Fragment>
     )
   }

@@ -1,7 +1,7 @@
 import fs from 'fs'
 
 const getSubtitlesFileType = file => {
-  const [ , fileExtension ] = file.name.split(".")
+  const fileExtension = file.name.split(".").pop()
   let fileType
   switch(fileExtension) {
     case "vtt":
@@ -34,7 +34,7 @@ export const handleSubtitlesFileLoading = e => {
         subtitleObjs = getSubtitleObjsFromWebVTT(fileContents)
         break
       case "SubRip":
-        subtitleObjs = getSubtitleObjsFromWebVTT(fileContents)
+        subtitleObjs = getSubtitleObjsFromSubRip(fileContents)
         break
       default:
         break
@@ -73,7 +73,7 @@ export const handleVideoSelection = e => {
 export const handleSave = subtitles => {
 
   return async function(dispatch) {
-    const renderedText = renderSubtitles(subtitles)
+    const renderedText = renderWebVTTSubtitles(subtitles)
     const blob = new Blob([renderedText], {
       type: "text/vtt;charset=utf8;"
     })
@@ -91,7 +91,7 @@ export const handleSave = subtitles => {
   }
 }
 
-const renderSubtitles = subtitles => {
+const renderWebVTTSubtitles = subtitles => {
 
   let renderedText = "WEBVTT\n\n"
 
