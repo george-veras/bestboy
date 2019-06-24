@@ -8,6 +8,8 @@ import './App.css'
 import subtitlesReducer from './reducers'
 import FileSelector from './components/FileSelector'
 import VideoPlayer from './components/VideoPlayer'
+import TitleAndMetaTags from './components/TitleAndMetaTags'
+import { gtagId } from './app-constants'
 
 let store = createStore(
   subtitlesReducer,
@@ -19,15 +21,18 @@ let store = createStore(
 class App extends Component {
   render() {
     return (
-      <Provider store={store}>
-        <div className="App">
-          <div className="body-card">
-            <span className="bestboy-title">bestboy</span>
-            <VideoPlayer />
-            <FileSelector />
+      <>
+        <TitleAndMetaTags title={"Best Boy"} gtagId={gtagId} />
+        <Provider store={store}>
+          <div className="App">
+            <div className="body-card">
+              <span className="bestboy-title">bestboy</span>
+              <VideoPlayer />
+              <FileSelector />
+            </div>
           </div>
-        </div>
-      </Provider>
+        </Provider>
+      </>
     )
   }
 }
