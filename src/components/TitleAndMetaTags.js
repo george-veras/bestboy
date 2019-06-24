@@ -20,7 +20,6 @@ class TitleAndMetaTags extends Component {
             `}
           </script>
         }
-
         { this.props.canonicalUrl && <link rel="canonical" href={this.props.canonicalUrl}/> }
       </Helmet>
     )
