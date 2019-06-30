@@ -14,8 +14,10 @@ class Home extends Component {
         <div className="App">
           <div className="body-card">
             <span className="bestboy-title">bestboy</span>
-            <VideoPlayer />
-            <FileSelector />
+            {
+              this.props.videoPath && this.props.subtitlesPath ?
+                <VideoPlayer /> : <FileSelector />
+            }
           </div>
         </div>
       </>
@@ -23,4 +25,11 @@ class Home extends Component {
   }
 }
 
-export default connect()(Home)
+const mapStateToProps = state => {
+  return {
+    videoPath: state.videoPath,
+    subtitlesPath: state.subtitlesPath
+  }
+}
+
+export default connect(mapStateToProps)(Home)
