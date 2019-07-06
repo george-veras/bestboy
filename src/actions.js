@@ -21,13 +21,17 @@ export const handleSubtitlesFileLoading = e => {
   return async function(dispatch) {
 
     dispatch(startFileLoading())
+    dispatch(updateSubtitlesLoadingPercentage(0))
 
     const [ file ] = e.target.files
     const subtitlesFileType = getSubtitlesFileType(file)
+    dispatch(updateSubtitlesLoadingPercentage(15))
 
     dispatch(updateSubtitlesPath(URL.createObjectURL(file)))
+    dispatch(updateSubtitlesLoadingPercentage(30))
 
     const fileContents = await getFileContents(file)
+    dispatch(updateSubtitlesLoadingPercentage(50))
     let subtitleObjs
     switch (subtitlesFileType) {
       case "WebVTT":
@@ -41,8 +45,10 @@ export const handleSubtitlesFileLoading = e => {
     }
 
     dispatch(updateSubtitleObjs(subtitleObjs))
+    dispatch(updateSubtitlesLoadingPercentage(95))
 
     dispatch(completeFileLoading())
+    dispatch(updateSubtitlesLoadingPercentage(100))
   }
 }
 
@@ -226,6 +232,13 @@ export const webvttTimeToMilliseconds = webvttTime => {
 export const startFileLoading = () => {
   return {
     type: 'FILE_LOADING_START'
+  }
+}
+
+export const updateSubtitlesLoadingPercentage = percentage => {
+  return {
+    type: 'UPDATE_SUBTITLES_LOADING_PERCENTAGE',
+    payload: percentage
   }
 }
 
