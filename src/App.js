@@ -5,7 +5,7 @@ import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
-import './App.css'
+import './App.scss'
 import subtitlesReducer from './reducers'
 import Home from './pages'
 

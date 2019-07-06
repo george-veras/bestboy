@@ -1,56 +1,70 @@
-import React, { Component, Fragment } from 'react'
-import { connect } from 'react-redux'
-
-import {
-  handleSubtitlesFileLoading,
-  handleSubtitlesShifting,
-  handleVideoSelection,
-  handleSave
-} from './../actions'
+import React, { Component } from 'react'
+import LoadProgress from './LoadProgress'
 
 class FileSelector extends Component {
   constructor(props) {
     super(props)
-    this.subtitleInput = React.createRef()
-    this.videoInput = React.createRef()
-    this.handleAddSubtitleClick = this.handleAddSubtitleClick.bind(this)
-    this.handleAddVideoClick = this.handleAddVideoClick.bind(this)
+    this.fileInput = React.createRef()
+    this.handleButtonClick = this.handleButtonClick.bind(this)
   }
 
-  handleAddSubtitleClick() {
-    this.subtitleInput.current.click()
-  }
-
-  handleAddVideoClick() {
-    this.videoInput.current.click()
+  handleButtonClick() {
+    this.fileInput.current.click()
   }
 
   render() {
+    let stage
+    switch(this.props.stage) {
+      case 'loading':
+        stage = <LoadProgress
+          label={"File: subtitle_StarWars.srt"}
+          percentage={this.props.loadProgress}
+        />
+        break;
+      case 'selection':
+      default:
+        stage = <>
+          <span>{this.props.label}</span>
+          <input
+            type="button"
+            value="+ add file"
+            className="button"
+            onClick={this.handleButtonClick}
+          />
+        </>
+        break;
+    }
+
     return (
-      <Fragment>
-        <span className="button-label">Choose subtitle to load</span>
-        <input id="subtitleInput" className="input-file" type="file" onChange={this.props.onSubtitlesSelection} ref={this.subtitleInput} />
-        <input type="button" value="+ add file" className="default-button" onClick={this.handleAddSubtitleClick}></input>
-        <span className="button-label">Choose video to load</span>
-        <input id="videoInput" className="input-file" type="file" onChange={this.props.onVideoSelection} ref={this.videoInput} />
-        <input type="button" value="+ add file" className="default-button" onClick={this.handleAddVideoClick}></input>
-      </Fragment>
+      <div className="file-selector">
+        {stage}
+        {/* {
+          this.props.isLoading ?
+            <LoadProgress
+              label={"File: subtitle_StarWars.srt"}
+              percentage={this.props.loadProgress}
+            />
+            :
+            <>
+              <span>{this.props.label}</span>
+              <input
+                type="button"
+                value="+ add file"
+                className="button"
+                onClick={this.handleButtonClick}
+              />
+            </>
+        } */}
+        <input
+          id="fileInput"
+          type="file"
+          className="input-file"
+          onChange={this.props.onFileChange}
+          ref={this.fileInput}
+        />
+      </div>
     )
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    subtitles: state.subtitles,
-  }
-}
-const mapDispatchToProps = dispatch => {
-  return {
-    onSubtitlesSelection: e => dispatch(handleSubtitlesFileLoading(e)),
-    onVideoSelection: e => dispatch(handleVideoSelection(e)),
-    onSave: (subtitles) => dispatch(handleSave(subtitles)),
-    shiftSubtitles: (milliseconds, subtitles) => dispatch(handleSubtitlesShifting(milliseconds, subtitles))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(FileSelector)
+export default FileSelector
