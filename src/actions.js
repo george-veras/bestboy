@@ -25,6 +25,7 @@ export const handleSubtitlesFileLoading = e => {
 
     const [ file ] = e.target.files
     const subtitlesFileType = getSubtitlesFileType(file)
+    dispatch(updateSubtitleFileName(file.name))
     dispatch(updateSubtitlesLoadingPercentage(15))
 
     dispatch(updateSubtitlesPath(URL.createObjectURL(file)))
@@ -69,10 +70,12 @@ const getFileContents = file => {
   })
 }
 
-export const handleVideoSelection = e => {
+export const handleVideoFileLoading = e => {
   return dispatch => {
     const [ file ] = e.target.files
+    dispatch(updateVideoFileName(file.name))
     dispatch(updateVideoPath(URL.createObjectURL(file)))
+    dispatch(updateVideoLoadingPercentage(100))
   }
 }
 
@@ -242,6 +245,13 @@ export const updateSubtitlesLoadingPercentage = percentage => {
   }
 }
 
+export const updateVideoLoadingPercentage = percentage => {
+  return {
+    type: 'UPDATE_VIDEO_LOADING_PERCENTAGE',
+    payload: percentage
+  }
+}
+
 export const completeFileLoading = () => {
   return {
     type: 'FILE_LOADING_COMPLETE'
@@ -273,5 +283,19 @@ export const updateSubtitlesPath = subtitlesPath => {
   return {
     type: 'UPDATE_SUBTITLES_PATH',
     payload: subtitlesPath
+  }
+}
+
+export const updateSubtitleFileName = subtitleFileName => {
+  return {
+    type: 'UPDATE_SUBTITLE_FILE_NAME',
+    payload: subtitleFileName
+  }
+}
+
+export const updateVideoFileName = videoFileName => {
+  return {
+    type: 'UPDATE_VIDEO_FILE_NAME',
+    payload: videoFileName
   }
 }

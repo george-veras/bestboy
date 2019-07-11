@@ -16,7 +16,9 @@ class FileSelectorsPanel extends Component {
     }
 
     this.handleSubtitleSelection = this.handleSubtitleSelection.bind(this)
+    this.handleSubtitleLoadCompletion = this.handleSubtitleLoadCompletion.bind(this)
     this.handleVideoSelection = this.handleVideoSelection.bind(this)
+    this.handleVideoLoadCompletion = this.handleVideoLoadCompletion.bind(this)
   }
 
   handleSubtitleSelection(e) {
@@ -26,7 +28,9 @@ class FileSelectorsPanel extends Component {
     })
 
     this.props.onSubtitlesSelection(e)
+  }
 
+  handleSubtitleLoadCompletion() {
     this.setState({
       ...this.state,
       subtitleStage: "success"
@@ -40,6 +44,11 @@ class FileSelectorsPanel extends Component {
     })
 
     this.props.onVideoSelection(e)
+  }
+
+  handleVideoLoadCompletion() {
+
+    console.log("handleVideoLoadCompletion")
 
     this.setState({
       ...this.state,
@@ -56,6 +65,7 @@ class FileSelectorsPanel extends Component {
           fileLoadingTitle={`File: ${this.props.subtitleFileName}`}
           stage={this.state.subtitleStage}
           loadProgress={this.props.subtitlesLoadingPercentage}
+          onLoadCompletion={this.handleSubtitleLoadCompletion}
         />
         <FileSelector
           label={"Choose video to load"}
@@ -63,6 +73,7 @@ class FileSelectorsPanel extends Component {
           fileLoadingTitle={`File: ${this.props.videoFileName}`}
           stage={this.state.videoStage}
           loadProgress={this.props.videoLoadingPercentage}
+          onLoadCompletion={this.handleVideoLoadCompletion}
         />
       </div>
     )
