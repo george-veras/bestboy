@@ -23,6 +23,7 @@
 .bestboy-title {
   font-size: 90px;
   font-weight: 900;
+  margin-bottom: 93px;
 }
 
 .button-label {
@@ -33,16 +34,30 @@
   font-weight: 400;
 }
 
+.file-selectors-panel {
+  .file-selector:nth-child(2) {
+    margin-top: 37px;
+  }
+}
+
 .file-selector {
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  & > span {
+  .label {
     font-family: "Roboto", sans-serif;
     font-size: 25px;
-    // margin: 15px;
     font-weight: 400;
+    margin-bottom: 15px;
+  }
+
+  .success-msg {
+    font-family: "Roboto", sans-serif;
+    font-size: 25px;
+    opacity: .65;
+    font-weight: 400;
+    margin-top: 12px;
   }
 
   .fileInput {
@@ -97,7 +112,7 @@
     & > .filler {
       background: #3CDABE;
       height: 100%;
-      transition: width .2s ease-in;
+      transition: width 1.5s ease-in;
     }
   }
 }

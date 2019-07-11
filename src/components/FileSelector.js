@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import LoadProgress from './LoadProgress'
 
+import checked from '../images/checked.svg'
+
 class FileSelector extends Component {
   constructor(props) {
     super(props)
@@ -17,14 +19,21 @@ class FileSelector extends Component {
     switch(this.props.stage) {
       case 'loading':
         stage = <LoadProgress
-          label={"File: subtitle_StarWars.srt"}
+          label={this.props.fileLoadingTitle}
           percentage={this.props.loadProgress}
+          onProgressCompletion={this.props.onLoadCompletion}
         />
+        break;
+      case 'success':
+        stage = <>
+          <img src={checked} alt="green check"></img>
+          <span className="success-msg">uploaded successfully</span>
+        </>
         break;
       case 'selection':
       default:
         stage = <>
-          <span>{this.props.label}</span>
+          <span className="label">{this.props.label}</span>
           <input
             type="button"
             value="+ add file"
@@ -38,23 +47,6 @@ class FileSelector extends Component {
     return (
       <div className="file-selector">
         {stage}
-        {/* {
-          this.props.isLoading ?
-            <LoadProgress
-              label={"File: subtitle_StarWars.srt"}
-              percentage={this.props.loadProgress}
-            />
-            :
-            <>
-              <span>{this.props.label}</span>
-              <input
-                type="button"
-                value="+ add file"
-                className="button"
-                onClick={this.handleButtonClick}
-              />
-            </>
-        } */}
         <input
           id="fileInput"
           type="file"
