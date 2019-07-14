@@ -8,80 +8,74 @@ class Remote extends Component {
   constructor(props) {
     super(props)
 
-    this.gotDescription1 = this.gotDescription1.bind(this)
-    this.gotDescription2 = this.gotDescription2.bind(this)
-    //this.onIceCandidate = this.onIceCandidate.bind(this)
+    this.state = {
+      sendChannel: {}
+    }
+
+    this.onSendChannelStateChange = this.onSendChannelStateChange.bind(this)
+    this.receiveChannelCallback = this.receiveChannelCallback.bind(this)
+    this.sendData = this.sendData.bind(this)
+    this.onClick = this.onClick.bind(this)
   }
 
   componentDidMount() {
+    console.log('Start componentDidMount')
+
     this.localConnection = new RTCPeerConnection()
-    this.sendChannel = this.localConnection.createDataChannel('sendDataChannel')
-    console.log('Created send data channel')
-
-    this.sendChannel.onopen = this.onSendChannelStateChange
-
-    // this.localConnection.onicecandidate = e => {
-    //   onIceCandidate(this.localConnection, e)
-    // }
+    const sChannel = this.localConnection.createDataChannel('sendDataChannel')
+    console.log('Created send data channel: ' + sChannel)
+    sChannel.onopen = this.onSendChannelStateChange
+    sChannel.onclose = this.onSendChannelStateChange
+    this.setState({
+      sendChannel: sChannel
+    })
 
     this.remoteConnection = new RTCPeerConnection()
     console.log('Created remote peer connection object remoteConnection')
+    this.remoteConnection.ondatachannel = this.receiveChannelCallback
 
-    this.localConnection.createOffer().then(
-      this.gotDescription1,
-      this.onCreateSessionDescriptionError
-    )
+    this.localConnection.onicecandidate = e => {
+      console.log('\x1b[36m%s\x1b[0m', "onIceCandidate from localConnection")
+      console.log(e.candidate)
+      !e.candidate || this.remoteConnection.addIceCandidate(e.candidate)
+    }
+    this.remoteConnection.onicecandidate = e => {
+      console.log('\x1b[36m%s\x1b[0m', "onIceCandidate from remoteConnection")
+      console.log(e.candidate)
+      !e.candidate || this.localConnection.addIceCandidate(e.candidate)
+    }
+
+    this.localConnection.createOffer()
+      .then(offer => this.localConnection.setLocalDescription(offer))
+      .then(() => this.remoteConnection.setRemoteDescription(this.localConnection.localDescription))
+      .then(() => this.remoteConnection.createAnswer())
+      .then(answer => this.remoteConnection.setLocalDescription(answer))
+      .then(() => this.localConnection.setRemoteDescription(this.remoteConnection.localDescription))
   }
 
   onSendChannelStateChange() {
-    const readyState = this.sendChannel.readyState
+    const readyState = this.state.sendChannel.readyState
     console.log('Send channel state is: ' + readyState)
-    if (readyState === 'open') {
-      dataChannelSend.disabled = false;
-      dataChannelSend.focus();
-      sendButton.disabled = false;
-      closeButton.disabled = false;
-    } else {
-      dataChannelSend.disabled = true;
-      sendButton.disabled = true;
-      closeButton.disabled = true;
+  }
+
+  receiveChannelCallback(event) {
+    console.log('Receive Channel Callback')
+    this.receiveChannel = event.channel
+    this.receiveChannel.onmessage = event => {
+      console.log('Received Message: ' + event.data)
+    }
+    this.receiveChannel.onopen = () => {
+      const readyState = this.receiveChannel.readyState
+      console.log(`Receive channel state is: ${readyState}`)
+    }
+    this.receiveChannel.onclose = () => {
+      const readyState = this.receiveChannel.readyState
+      console.log(`Receive channel state is: ${readyState}`)
     }
   }
 
-  sendData() {
-    const data = "Sample text to be sent"
-    this.sendChannel.send(data)
-    console.log('Sent Data: ' + data)
-  }
-
-  // onIceCandidate(pc, event) {
-  //   getOtherPc(pc)
-  //     .addIceCandidate(event.candidate)
-  //     .then(
-  //       () => onAddIceCandidateSuccess(pc),
-  //       err => onAddIceCandidateError(pc, err)
-  //     )
-  //   console.log(`${getName(pc)} ICE candidate: ${event.candidate ? event.candidate.candidate : '(null)'}`);
-  // }
-
-  gotDescription1(desc) {
-    this.localConnection.setLocalDescription(desc)
-    console.log(`Offer from localConnection\n${desc.sdp}`)
-    this.remoteConnection.setRemoteDescription(desc)
-    this.remoteConnection.createAnswer().then(
-      this.gotDescription2,
-      this.onCreateSessionDescriptionError
-    )
-  }
-
-  gotDescription2(desc) {
-    this.remoteConnection.setLocalDescription(desc)
-    console.log(`Answer from remoteConnection\n${desc.sdp}`)
-    this.localConnection.setRemoteDescription(desc)
-  }
-
-  onCreateSessionDescriptionError(error) {
-    console.log('Failed to create session description: ' + error.toString());
+  onClick(e) {
+    this.sendData()
   }
 
   render() {
@@ -91,6 +85,7 @@ class Remote extends Component {
         <div className="App">
           <div className="body-card">
             <span className="bestboy-title">bestboy</span>
+            <input type="button" value="send message" onClick={this.onClick} />
           </div>
         </div>
       </>
