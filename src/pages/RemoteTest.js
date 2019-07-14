@@ -46,7 +46,11 @@ class RemoteTest extends Component {
     }
 
     this.localConnection.createOffer()
-      .then(offer => this.localConnection.setLocalDescription(offer))
+      .then(offer =>  { 
+        this.localConnection.setLocalDescription(offer)
+        console.log("offer:")
+        console.log(offer)
+      })
       .then(() => this.remoteConnection.setRemoteDescription(this.localConnection.localDescription))
       .then(() => this.remoteConnection.createAnswer())
       .then(answer => this.remoteConnection.setLocalDescription(answer))
