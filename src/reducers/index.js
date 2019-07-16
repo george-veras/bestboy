@@ -1,9 +1,12 @@
 const INITIAL_STATE = {
-  loadingFile: false,
   subtitleFileContents: "",
   subtitles: [],
   videoPath: "",
-  subtitlesPath: ""
+  videoFileName: "",
+  subtitleFileName: "",
+  subtitlesPath: "",
+  subtitlesLoadingPercentage: 0,
+  videoLoadingPercentage: 0,
 }
 
 const subtitles = (state = INITIAL_STATE, action) => {
@@ -37,6 +40,26 @@ const subtitles = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         subtitlesPath: action.payload
+      }
+    case 'UPDATE_SUBTITLES_LOADING_PERCENTAGE':
+      return {
+        ...state,
+        subtitlesLoadingPercentage: action.payload
+      }
+    case 'UPDATE_VIDEO_LOADING_PERCENTAGE':
+      return {
+        ...state,
+        videoLoadingPercentage: action.payload
+      }
+    case 'UPDATE_VIDEO_FILE_NAME':
+      return {
+        ...state,
+        videoFileName: action.payload
+      }
+    case 'UPDATE_SUBTITLE_FILE_NAME':
+      return {
+        ...state,
+        subtitleFileName: action.payload
       }
     default:
       return state

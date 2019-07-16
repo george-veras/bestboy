@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 
-import FileSelector from '../components/FileSelector'
+import FileSelectorsPanel from '../components/FileSelectorsPanel'
 import VideoPlayer from '../components/VideoPlayer'
 import TitleAndMetaTags from '../components/TitleAndMetaTags'
 import { gtagId } from '../app-constants'
@@ -16,7 +16,7 @@ class Home extends Component {
             <span className="bestboy-title">bestboy</span>
             {
               this.props.videoPath && this.props.subtitlesPath ?
-                <VideoPlayer /> : <FileSelector />
+                <VideoPlayer /> : <FileSelectorsPanel />
             }
           </div>
         </div>
