@@ -17,6 +17,12 @@ const getSubtitlesFileType = file => {
   return fileType
 }
 
+export const handleUpdateSDP = sdp => {
+  return function(dispatch) {
+    dispatch(updateSDP)
+  }
+}
+
 export const handleSubtitlesFileLoading = e => {
   return async function(dispatch) {
 
@@ -297,5 +303,12 @@ export const updateVideoFileName = videoFileName => {
   return {
     type: 'UPDATE_VIDEO_FILE_NAME',
     payload: videoFileName
+  }
+}
+
+export const updateSDP = sdp => {
+  return {
+    type: 'UPDATE_SDP',
+    payload: sdp
   }
 }
