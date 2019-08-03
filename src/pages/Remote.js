@@ -1,17 +1,40 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
+import Peer from 'peerjs'
 
 import TitleAndMetaTags from '../components/TitleAndMetaTags'
 import { gtagId } from '../app-constants'
 
 class Remote extends Component {
+  constructor(props) {
+    super(props)
+
+    const peer = new Peer('esseaquiehopeerdoremote041085', {debug: 3})
+    const conn = peer.connect('esseaquiehopeerdoqrcode041085')
+    conn.on('open', () => {
+      console.log("OPEEEEEEEEEEN")
+      this.state.conn.send('hi!')
+    })
+
+    this.state = {
+      conn
+    }
+    this.onClick = this.onClick.bind(this)
+  }
+
   componentDidMount() {
+    // this.state.conn.on('open', () => {
+    //   console.log("OPEEEEEEEEEEN")
+    //   this.state.conn.send('hi!')
+    // })
+
+
     const urlSearchParams = new URLSearchParams(this.props.location.search)
     const offer = JSON.parse(urlSearchParams.get("q"))
     console.log("offer from quesrystring:")
     console.log(offer)
     const candidate = JSON.parse(urlSearchParams.get("c"))
-    offer.sdp = decodeURI(offer.sdp)
+    //offer.sdp = decodeURI(offer.sdp)
 
     this.localConnection = new RTCPeerConnection()
     this.localConnection.ondatachannel = this.receiveChannelCallback
@@ -21,20 +44,20 @@ class Remote extends Component {
       //!e.candidate || this.localConnection.addIceCandidate(e.candidate)
     }
 
-    this.localConnection.setRemoteDescription(offer)
-      .then(() => this.localConnection.createAnswer())
-      .then(answer => {
-        this.localConnection.setLocalDescription(answer)
-        console.log("remoteDescription:")
-        console.log(this.localConnection.remoteDescription.sdp)
-        console.log("localDescription:")
-        console.log(this.localConnection.localDescription.sdp)
-      })
-      .then(() => {
-        console.log("candidate:")
-        console.log(candidate)
-        this.localConnection.addIceCandidate(candidate)
-      })
+    // this.localConnection.setRemoteDescription(offer)
+    //   .then(() => this.localConnection.createAnswer())
+    //   .then(answer => {
+    //     this.localConnection.setLocalDescription(answer)
+    //     console.log("remoteDescription:")
+    //     console.log(this.localConnection.remoteDescription.sdp)
+    //     console.log("localDescription:")
+    //     console.log(this.localConnection.localDescription.sdp)
+    //   })
+    //   .then(() => {
+    //     console.log("candidate:")
+    //     console.log(candidate)
+    //     this.localConnection.addIceCandidate(candidate)
+    //   })
   }
 
   receiveChannelCallback(event) {
@@ -54,7 +77,10 @@ class Remote extends Component {
   }
 
   onClick(e) {
-    this.sendData()
+    //this.sendData()
+    console.log('this.state.conn.send')
+    console.log(this.state.conn)
+    this.state.conn.send('hi!')
   }
 
   sendData() {
