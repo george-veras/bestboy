@@ -10,22 +10,6 @@ class QRCode extends Component {
   constructor(props) {
     super(props)
 
-    this.connection = this.connection.bind(this)
-
-    const peer = new Peer('esseaquiehopeerdoqrcode041085', {debug: 3})
-    //const peer = new Peer({debug: 3})
-    //const conn1 = peer.connect('esseaquiehopeerdoremote041085')
-
-    // peer.on('connection', conn => {
-    //   console.log('CONNECTION OPEN!!!!!!!')
-    //   console.log(conn)
-    //   conn.on('data', data => {
-    //     console.log(data)
-    //   })
-    // })
-
-    peer.on('connection', this.connection)
-
     this.state = {
       qrcode: "",
       localConnection: {},
@@ -33,11 +17,6 @@ class QRCode extends Component {
       candidateQRCode: {},
       peer
     }
-
-    this.fileInput = React.createRef()
-    //this.receiveChannelCallback = this.receiveChannelCallback.bind(this)
-    //this.onClick = this.onClick.bind(this)
-    //this.onSendChannelStateChange = this.onSendChannelStateChange.bind(this)
   }
 
   connection(conn) {
@@ -98,22 +77,6 @@ class QRCode extends Component {
   // onSendChannelStateChange() {
   //   const readyState = this.state.dataChannel.readyState
   //   console.log('Data channel state is: ' + readyState)
-  // }
-
-  // receiveChannelCallback(event) {
-  //   console.log('Receive Channel Callback')
-  //   this.receiveChannel = event.channel
-  //   this.receiveChannel.onmessage = event => {
-  //     console.log('Received Message: ' + event.data)
-  //   }
-  //   this.receiveChannel.onopen = () => {
-  //     const readyState = this.receiveChannel.readyState
-  //     console.log(`Receive channel state is: ${readyState}`)
-  //   }
-  //   this.receiveChannel.onclose = () => {
-  //     const readyState = this.receiveChannel.readyState
-  //     console.log(`Receive channel state is: ${readyState}`)
-  //   }
   // }
 
   // onClick(e) {
