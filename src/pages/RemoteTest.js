@@ -19,8 +19,6 @@ class RemoteTest extends Component {
   }
 
   componentDidMount() {
-    console.log('Start componentDidMount')
-
     this.localConnection = new RTCPeerConnection()
     const sChannel = this.localConnection.createDataChannel('sendDataChannel')
     console.log('Created send data channel: ' + sChannel)
@@ -35,25 +33,34 @@ class RemoteTest extends Component {
     this.remoteConnection.ondatachannel = this.receiveChannelCallback
 
     this.localConnection.onicecandidate = e => {
-      console.log('\x1b[36m%s\x1b[0m', "onIceCandidate from localConnection")
+      console.log('\x1b[36m%s\x1b[0m', "onIceCandidate from localConnection:")
       console.log(e.candidate)
       !e.candidate || this.remoteConnection.addIceCandidate(e.candidate)
     }
     this.remoteConnection.onicecandidate = e => {
-      console.log('\x1b[36m%s\x1b[0m', "onIceCandidate from remoteConnection")
+      console.log('\x1b[36m%s\x1b[0m', "onIceCandidate from remoteConnection:")
       console.log(e.candidate)
       !e.candidate || this.localConnection.addIceCandidate(e.candidate)
     }
 
     this.localConnection.createOffer()
-      .then(offer =>  { 
+      .then(offer => {
         this.localConnection.setLocalDescription(offer)
         console.log("offer:")
         console.log(offer)
       })
-      .then(() => this.remoteConnection.setRemoteDescription(this.localConnection.localDescription))
-      .then(() => this.remoteConnection.createAnswer())
-      .then(answer => this.remoteConnection.setLocalDescription(answer))
+      .then(() => {
+        console.log("gonna remoteConnection.setRemoteDescription")
+        this.remoteConnection.setRemoteDescription(this.localConnection.localDescription)
+      })
+      .then(() => {
+        console.log("gonna remoteConnection.createAnswer")
+        return this.remoteConnection.createAnswer()
+      })
+      .then(answer => {
+        console.log("gonna remoteConnection.setLocalDescription")
+        this.remoteConnection.setLocalDescription(answer)
+      })
       .then(() => this.localConnection.setRemoteDescription(this.remoteConnection.localDescription))
   }
 

@@ -9,7 +9,7 @@ class Remote extends Component {
   constructor(props) {
     super(props)
 
-    const peer = new Peer('esseaquiehopeerdoremote041085', {debug: 3})
+    const peer = new Peer('esseaquiehopeerdoremote041085_1', {debug: 3})
     const conn = peer.connect('esseaquiehopeerdoqrcode041085')
     conn.on('open', () => {
       console.log("OPEEEEEEEEEEN")
