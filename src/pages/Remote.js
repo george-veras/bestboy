@@ -1,6 +1,4 @@
 import React, {Component} from 'react'
-import { connect } from 'react-redux'
-import Peer from 'peerjs'
 
 import TitleAndMetaTags from '../components/TitleAndMetaTags'
 import { gtagId } from '../app-constants'
@@ -9,43 +7,34 @@ class Remote extends Component {
   constructor(props) {
     super(props)
 
-    const peer = new Peer('esseaquiehopeerdoremote041085_1', {debug: 3})
-    const conn = peer.connect('esseaquiehopeerdoqrcode041085')
-    conn.on('open', () => {
-      console.log("OPEEEEEEEEEEN")
-      this.state.conn.send('hi!')
-    })
-
     this.state = {
-      conn
+      connection: {}
     }
-    this.onClick = this.onClick.bind(this)
   }
 
   componentDidMount() {
-    // this.state.conn.on('open', () => {
-    //   console.log("OPEEEEEEEEEEN")
-    //   this.state.conn.send('hi!')
-    // })
-
-
     const urlSearchParams = new URLSearchParams(this.props.location.search)
-    const offer = JSON.parse(urlSearchParams.get("q"))
-    console.log("offer from quesrystring:")
-    console.log(offer)
     const candidate = JSON.parse(urlSearchParams.get("c"))
+    console.log('\x1b[36m%s\x1b[0m', "received Candidate:")
+    console.log(candidate)
     //offer.sdp = decodeURI(offer.sdp)
 
-    this.localConnection = new RTCPeerConnection()
-    this.localConnection.ondatachannel = this.receiveChannelCallback
-    this.localConnection.onicecandidate = e => {
+    const connection = new RTCPeerConnection()
+    connection.ondatachannel = this.receiveChannelCallback
+    connection.onicecandidate = e => {
       console.log('\x1b[36m%s\x1b[0m', "onIceCandidate")
       console.log(e.candidate)
       //!e.candidate || this.localConnection.addIceCandidate(e.candidate)
     }
+    const iceCandidateObj = new RTCIceCandidate(candidate)
+    connection.addIceCandidate(iceCandidateObj)
 
-    // this.localConnection.setRemoteDescription(offer)
-    //   .then(() => this.localConnection.createAnswer())
+    this.setState({
+      connection
+    })
+
+    // this.state.connection.setRemoteDescription(offer)
+    //   .then(() => this.state.connection.createAnswer())
     //   .then(answer => {
     //     this.localConnection.setLocalDescription(answer)
     //     console.log("remoteDescription:")
@@ -104,4 +93,4 @@ class Remote extends Component {
   }
 }
 
-export default connect()(Remote)
+export default Remote
