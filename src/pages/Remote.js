@@ -8,51 +8,64 @@ class Remote extends Component {
     super(props)
 
     this.state = {
-      connection: {}
+      connection: {},
+      candidates: [],
+      answer: {},
+      messages: ""
     }
+
+    this.candidatesTextbox = React.createRef()
+    this.onReadCandidates = this.onReadCandidates.bind(this)
+    this.receiveChannelCallback = this.receiveChannelCallback.bind(this)
   }
 
   componentDidMount() {
     const urlSearchParams = new URLSearchParams(this.props.location.search)
-    const candidate = JSON.parse(urlSearchParams.get("c"))
-    console.log('\x1b[36m%s\x1b[0m', "received Candidate:")
-    console.log(candidate)
-    //offer.sdp = decodeURI(offer.sdp)
+    const offer = JSON.parse(urlSearchParams.get("offer"))
+    console.log('\x1b[36m%s\x1b[0m', "received offer:")
+    console.log(offer)
 
     const connection = new RTCPeerConnection()
     connection.ondatachannel = this.receiveChannelCallback
-    connection.onicecandidate = e => {
+    connection.onicecandidate = ({candidate}) => {
       console.log('\x1b[36m%s\x1b[0m', "onIceCandidate")
-      console.log(e.candidate)
-      //!e.candidate || this.localConnection.addIceCandidate(e.candidate)
+      console.log(candidate)
+      if (candidate) {
+        this.setState({
+          candidates: [
+            ...this.state.candidates,
+            candidate
+          ]
+        })
+      }
     }
-    const iceCandidateObj = new RTCIceCandidate(candidate)
-    connection.addIceCandidate(iceCandidateObj)
 
     this.setState({
       connection
     })
 
-    // this.state.connection.setRemoteDescription(offer)
-    //   .then(() => this.state.connection.createAnswer())
-    //   .then(answer => {
-    //     this.localConnection.setLocalDescription(answer)
-    //     console.log("remoteDescription:")
-    //     console.log(this.localConnection.remoteDescription.sdp)
-    //     console.log("localDescription:")
-    //     console.log(this.localConnection.localDescription.sdp)
-    //   })
-    //   .then(() => {
-    //     console.log("candidate:")
-    //     console.log(candidate)
-    //     this.localConnection.addIceCandidate(candidate)
-    //   })
+    connection.setRemoteDescription(offer)
+      .then(() => this.state.connection.createAnswer())
+      .then(answer => {
+        this.state.connection.setLocalDescription(answer)
+        console.log("remoteDescription:")
+        console.log(this.state.connection.remoteDescription.sdp)
+        console.log("localDescription:")
+        console.log(this.state.connection.localDescription.sdp)
+        this.setState({
+          answer
+        })
+      })
   }
 
   receiveChannelCallback(event) {
     console.log('Receive Channel Callback')
     this.receiveChannel = event.channel
     this.receiveChannel.onmessage = event => {
+      const messages = `${this.state.messages}\n${event.data}`
+      this.setState({
+        messages
+      })
       console.log('Received Message: ' + event.data)
     }
     this.receiveChannel.onopen = () => {
@@ -65,17 +78,13 @@ class Remote extends Component {
     }
   }
 
-  onClick(e) {
-    //this.sendData()
-    console.log('this.state.conn.send')
-    console.log(this.state.conn)
-    this.state.conn.send('hi!')
-  }
-
-  sendData() {
-    const data = "Sample Text"
-    this.state.sendChannel.send(data)
-    console.log('Sent Data: ' + data)
+  onReadCandidates(e) {
+    console.log('onReadCandidates')
+    const candidates = JSON.parse(this.candidatesTextbox.current.value)
+    candidates.forEach(candidate => {
+      const iceCandidateObj = new RTCIceCandidate(candidate)
+      this.state.connection.addIceCandidate(iceCandidateObj)
+    })
   }
 
   render() {
@@ -85,7 +94,17 @@ class Remote extends Component {
         <div className="App">
           <div className="body-card">
             <span className="bestboy-title">bestboy</span>
-            <input type="button" value="send message" onClick={this.onClick} />
+            {/* <input type="button" value="send message" onClick={this.onClick} /> */}
+            <p>Answer:</p>
+            <p>{JSON.stringify(this.state.answer)}</p>
+            <p>Candidates:</p>
+            <p>{JSON.stringify(this.state.candidates)}</p>
+            <input
+              type="text"
+              ref={this.candidatesTextbox}
+            />
+            <input type="button" value="read candidates" onClick={this.onReadCandidates} />
+            <p>{JSON.stringify(this.state.messages)}</p>
           </div>
         </div>
       </>
