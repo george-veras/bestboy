@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   subtitlesPath: "",
   subtitlesLoadingPercentage: 0,
   videoLoadingPercentage: 0,
+  sdp: ""
 }
 
 const subtitles = (state = INITIAL_STATE, action) => {
@@ -60,6 +61,11 @@ const subtitles = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         subtitleFileName: action.payload
+      }
+    case 'UPDATE_SDP':
+      return {
+        ...state,
+        sdp: action.payload
       }
     default:
       return state

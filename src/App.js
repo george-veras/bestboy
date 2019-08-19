@@ -8,6 +8,9 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import './App.scss'
 import subtitlesReducer from './reducers'
 import Home from './pages'
+import RemoteTest from './pages/RemoteTest'
+import Remote from './pages/Remote'
+import QRCode from './pages/QRCode'
 
 let store = createStore(
   subtitlesReducer,
@@ -22,6 +25,9 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <Route exact path="/" component={Home} />
+          <Route path="/remote-test" component={RemoteTest} />
+          <Route path="/remote" component={Remote} />
+          <Route path="/qrcode" component={QRCode} />
         </Router>
       </Provider>
     )
