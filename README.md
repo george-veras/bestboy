@@ -103,4 +103,4 @@ src/
 
 ## 📄 License
 
-MIT © [George Véras Valentim](https://github.com/george-veras)
+MIT © [George Véras Valentim](https://george-veras.github.io)
